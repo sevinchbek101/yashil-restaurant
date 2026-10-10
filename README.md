@@ -1,15 +1,16 @@
 # YASHIL — sog‘lom taomlar restorani
 
-YASHIL uchun to‘liq ishlaydigan buyurtma sayti: ommaviy menyu, savat va checkout, buyurtmani kuzatish hamda himoyalangan admin panel.
+YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, savat va checkout, buyurtmani kuzatish hamda himoyalangan admin panel.
 
 ## Joriy versiya
 
-Version 4
+Version 5
 
-- Alohida `/menu` sahifasi
-- Kategoriyalar bo‘yicha barcha taomlar
-- Bosh sahifada 3 ta mashhur taom namunasi
-- Menyu sahifasida savat va buyurtma berish
+- O‘zbek, rus va ingliz tillari
+- Til tanlovini brauzerda eslab qolish
+- Menyuda nom va tavsif bo‘yicha tezkor qidiruv
+- Kategoriya va qidiruvni birga filtrlash
+- Bosh sahifa, menyu va kuzatish sahifalarining tarjimasi
 - `/track` orqali buyurtma holatini kuzatish
 - `/admin` orqali taomlar va buyurtmalarni boshqarish
 

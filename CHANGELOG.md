@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 5 — Ko‘p tilli sayt va menyu qidiruvi
+
+- O‘zbek, rus va ingliz tillari qo‘shildi.
+- Til almashtirgich bosh sahifa, menyu va buyurtma kuzatuvida ishlaydi.
+- Tanlangan til brauzerda saqlanadi va sahifalar orasida eslab qolinadi.
+- Menyuga taom nomi va tavsifi bo‘yicha tezkor qidiruv qo‘shildi.
+- Qidiruv kategoriya filtrlari bilan birgalikda ishlaydi.
+- Natijalar soni va topilmagan holat uchun alohida xabar qo‘shildi.
+- Mobil ko‘rinish yangi boshqaruvlar uchun moslashtirildi.
+
 ## Version 4 — Alohida menyu sahifasi
 
 - Yangi `/menu` sahifasi qo‘shildi.
@@ -12,9 +22,7 @@
 
 - Yangi `/track` sahifasi qo‘shildi.
 - Buyurtma raqami va telefon orqali xavfsiz tekshirish qo‘shildi.
-- Yangi, tayyorlanmoqda, yetkazilmoqda, yetkazildi va bekor qilindi holatlari ko‘rsatiladi.
 - Holat har 10 soniyada avtomatik yangilanadi.
-- Buyurtma qabul qilingach kuzatish tugmasi ko‘rsatiladi.
 
 ## Version 2 — Admin panel
 
