@@ -1,24 +1,28 @@
-# YASHIL — Versiyalar tarixi
+# Changelog
 
-Har bir katta yangilanish alohida version-N branchida saqlanadi. main branch doimo eng yangi barqaror kodni ko‘rsatadi.
+## Version 4 — Alohida menyu sahifasi
 
-## Version 3
+- Yangi `/menu` sahifasi qo‘shildi.
+- Barcha taomlar kategoriya filtrlari bilan shu sahifaga joylandi.
+- Tepadagi “MENYU” tugmasi va buyurtma CTA’lari yangi sahifaga bog‘landi.
+- Bosh sahifada namuna sifatida 3 ta mashhur taom qoldirildi.
+- Menyu sahifasida savat, checkout va buyurtma kuzatuviga o‘tish to‘liq ishlaydi.
 
-- Xaridor uchun “Buyurtmani kuzatish” sahifasi qo‘shildi.
-- Buyurtma raqami va telefon raqami bilan xavfsiz tekshirish yaratildi.
-- Holatlar Qabul qilindi, Tayyorlanmoqda, Yetkazilmoqda va Yetkazildi bosqichlarida ko‘rsatiladi.
-- Admin buyurtma holatini o‘zgartirganda mijoz sahifasi har 10 soniyada avtomatik yangilanadi.
-- Buyurtma muvaffaqiyatli berilgach kuzatish tugmasi chiqariladi.
-- Telefon raqami turli yozilish formatlarida ham taniladi.
-- Bekor qilingan buyurtma uchun alohida holat qo‘shildi.
+## Version 3 — Buyurtmani kuzatish
 
-## Version 2
+- Yangi `/track` sahifasi qo‘shildi.
+- Buyurtma raqami va telefon orqali xavfsiz tekshirish qo‘shildi.
+- Yangi, tayyorlanmoqda, yetkazilmoqda, yetkazildi va bekor qilindi holatlari ko‘rsatiladi.
+- Holat har 10 soniyada avtomatik yangilanadi.
+- Buyurtma qabul qilingach kuzatish tugmasi ko‘rsatiladi.
 
-- Himoyalangan admin panel qo‘shildi.
-- Taomlar, buyurtmalar, mijozlar, promo-kodlar va yetkazish hududlari boshqaruvi yaratildi.
+## Version 2 — Admin panel
+
+- Himoyalangan `/admin` paneli qo‘shildi.
+- Taomlar, buyurtmalar, mijozlar, promo-kodlar va yetkazish hududlarini boshqarish qo‘shildi.
 - Cloudflare D1 ma’lumotlar bazasi ulandi.
 
-## Version 1
+## Version 1 — Birinchi ko‘rinish
 
-- Birinchi responsiv restoran sayti yaratildi.
-- Kategoriyalar, interaktiv savat va mobil dizayn qo‘shildi.
+- YASHIL restorani uchun landing sahifa yaratildi.
+- Taom kartalari, savat va buyurtma formasi qo‘shildi.

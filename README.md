@@ -1,19 +1,16 @@
-# YASHIL Restaurant
+# YASHIL — sog‘lom taomlar restorani
 
-Sog‘lom taomlar restorani uchun zamonaviy veb-sayt.
+YASHIL uchun to‘liq ishlaydigan buyurtma sayti: ommaviy menyu, savat va checkout, buyurtmani kuzatish hamda himoyalangan admin panel.
 
-## Versiyalar
+## Joriy versiya
 
-- **version-1** — dastlabki statik restoran sayti.
-- **version-2** — admin panel va D1 ma’lumotlar bazasi qo‘shilgan versiya.
-- **version-3** — xaridor uchun real vaqtda buyurtma kuzatuvi qo‘shilgan versiya.
-- **main** — eng yangi barqaror kod.
+Version 4
 
-## Asosiy imkoniyatlar
+- Alohida `/menu` sahifasi
+- Kategoriyalar bo‘yicha barcha taomlar
+- Bosh sahifada 3 ta mashhur taom namunasi
+- Menyu sahifasida savat va buyurtma berish
+- `/track` orqali buyurtma holatini kuzatish
+- `/admin` orqali taomlar va buyurtmalarni boshqarish
 
-- O‘zbekcha restoran vitrinası va savat
-- Buyurtmalarni serverda saqlash
-- Himoyalangan admin panel
-- Mahsulotlar, mijozlar, promo-kodlar va yetkazish hududlari boshqaruvi
-- Buyurtma raqami va telefon orqali holatni kuzatish
-- ChatGPT Sites va Cloudflare D1 uchun tayyor
+Sayt: https://yashil-bowl-uz.apt-snipe-2429.chatgpt.site
