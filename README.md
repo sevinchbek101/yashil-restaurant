@@ -4,14 +4,14 @@ YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, s
 
 ## Joriy versiya
 
-Version 8
+Version 9
 
-- Checkout oynasidagi noto‘g‘ri “Taomlar” yozuvi “Summa”ga almashtirildi
-- Summa yoniga Solar Broken `MoneyBag` ikonkasi qo‘shildi
-- Buyurtma yuborish va holatni tekshirish tugmalariga animatsiyali loader qo‘shildi
-- Menyu yuklanishida skeleton animatsiya ishlaydi
-- Sahifa, modal va taom kartalariga silliq o‘tish animatsiyalari qo‘shildi
-- Animatsiyalar `prefers-reduced-motion` sozlamasini hurmat qiladi
+- Version 8’dagi gorizontal siljish va kesilish muammosi tuzatildi
+- Butun sahifaga berilgan xavfli transform animatsiyasi olib tashlandi
+- Savat paneli, modal va sahifa kengligi viewport ichida barqaror ishlaydi
+- Summa uchun `MoneyBag` ikonkasi saqlandi
+- Loader va skeleton animatsiyalari xavfsiz elementlarda qoldirildi
+- Animatsiyalar faqat foydalanuvchi harakatni kamaytirishni tanlamaganida ishlaydi
 - O‘zbek, rus va ingliz tillari
 - `/track` orqali buyurtma holatini kuzatish
 - `/admin` orqali taomlar va buyurtmalarni boshqarish

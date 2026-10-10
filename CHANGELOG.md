@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 9 — Layout va animatsiya tuzatishlari
+
+- Butun sahifaga qo‘llangan `transform` animatsiyasi olib tashlandi.
+- Transform sabab fixed savat paneli viewportdan tashqariga chiqib, sahifani gorizontal siljitishi tuzatildi.
+- `html`, `body`, savat fon qatlami va modal kengligi viewport ichida cheklab qo‘yildi.
+- Taom kartalaridagi ortiqcha ketma-ket kirish animatsiyalari olib tashlandi.
+- Modal, loader va skeleton animatsiyalari xavfsiz elementlarda saqlandi.
+- Harakatli effektlar `prefers-reduced-motion: no-preference` bilan cheklab qo‘yildi.
+- Version 8’dagi summa matni va pul ikonkasi o‘zgarishsiz saqlandi.
+
+# Changelog
+
 ## Version 8 — Summa ikonkasini va animatsiyalarni yaxshilash
 
 - Checkout oynasidagi “Taomlar” yozuvi “Summa”ga almashtirildi.
