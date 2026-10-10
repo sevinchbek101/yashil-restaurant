@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 7 — Savatga qo‘shish ikonkasini yaxshilash
+
+- “Savatga qo‘shish” tugmalaridagi oddiy `+` belgisi olib tashlandi.
+- Solar Icons `Broken` uslubidagi `CartPlus` ikonka qo‘shildi.
+- Yangi ikonka bosh sahifadagi namunaviy taomlar va to‘liq menyuda ishlaydi.
+- Tugma ko‘rinishi o‘zbek, rus va ingliz tillarida bir xil saqlandi.
+
 ## Version 6 — Solar ikonkalari va kuzatuv tuzatishlari
 
 - Solar Icons rasmiy React paketi va `Broken` uslubi qo‘shildi.

@@ -4,11 +4,11 @@ YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, s
 
 ## Joriy versiya
 
-Version 6
+Version 7
 
-- Solar Icons `Broken` uslubidagi yagona ikonka tizimi
-- Kuzatuv sahifasidagi sana va timeline xatolari tuzatilgan
-- Jami narx tarkibi: taomlar, chegirma va yetkazish
+- “Savatga qo‘shish” tugmalarida Solar Broken `CartPlus` ikonkasidan foydalaniladi
+- Oddiy `+` belgisi olib tashlandi
+- Yangi ikonka bosh sahifa va to‘liq menyuda bir xil ishlaydi
 - O‘zbek, rus va ingliz tillari
 - Menyuda nom va tavsif bo‘yicha tezkor qidiruv
 - `/track` orqali buyurtma holatini kuzatish

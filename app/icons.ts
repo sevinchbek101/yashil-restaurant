@@ -1,5 +1,6 @@
 export { MagnifierIcon } from "@solar-icons/react/broken/magnifier";
 export { CartLargeMinimalisticIcon } from "@solar-icons/react/broken/cart-large-minimalistic";
+export { CartPlusIcon } from "@solar-icons/react/broken/cart-plus";
 export { HomeIcon } from "@solar-icons/react/broken/home";
 export { DeliveryIcon } from "@solar-icons/react/broken/delivery";
 export { ChefHatIcon } from "@solar-icons/react/broken/chef-hat";
