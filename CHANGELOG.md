@@ -2,21 +2,23 @@
 
 Har bir katta yangilanish alohida version-N branchida saqlanadi. main branch doimo eng yangi barqaror kodni ko‘rsatadi.
 
+## Version 3
+
+- Xaridor uchun “Buyurtmani kuzatish” sahifasi qo‘shildi.
+- Buyurtma raqami va telefon raqami bilan xavfsiz tekshirish yaratildi.
+- Holatlar Qabul qilindi, Tayyorlanmoqda, Yetkazilmoqda va Yetkazildi bosqichlarida ko‘rsatiladi.
+- Admin buyurtma holatini o‘zgartirganda mijoz sahifasi har 10 soniyada avtomatik yangilanadi.
+- Buyurtma muvaffaqiyatli berilgach kuzatish tugmasi chiqariladi.
+- Telefon raqami turli yozilish formatlarida ham taniladi.
+- Bekor qilingan buyurtma uchun alohida holat qo‘shildi.
+
 ## Version 2
 
 - Himoyalangan admin panel qo‘shildi.
-- Taomlarni qo‘shish, tahrirlash, yashirish va o‘chirish imkoniyati yaratildi.
-- Buyurtmalarni qabul qilish va holatini boshqarish qo‘shildi.
-- Mijozlar bazasi va savdo statistikasi yaratildi.
-- Promo-kodlar boshqaruvi qo‘shildi.
-- Yetkazib berish hududlari, narxlari va to‘lov sozlamalari qo‘shildi.
+- Taomlar, buyurtmalar, mijozlar, promo-kodlar va yetkazish hududlari boshqaruvi yaratildi.
 - Cloudflare D1 ma’lumotlar bazasi ulandi.
-- Xaridor uchun haqiqiy buyurtma berish shakli yaratildi.
 
 ## Version 1
 
-- YASHIL restoranining birinchi responsiv sayti yaratildi.
-- Bowl, salat va ichimlik kategoriyalari qo‘shildi.
-- Interaktiv savat va narx hisoblash ishlari qo‘shildi.
-- Sweetgreen uslubidagi yashil, krem va lime dizayn qo‘llandi.
-- Mobil qurilmalar uchun moslashuvchan ko‘rinish yaratildi.
+- Birinchi responsiv restoran sayti yaratildi.
+- Kategoriyalar, interaktiv savat va mobil dizayn qo‘shildi.

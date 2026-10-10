@@ -28,6 +28,14 @@ function authed(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   await seed();
+  if (req.nextUrl.searchParams.get("track") === "1") {
+    const orderId = Number(req.nextUrl.searchParams.get("order"));
+    const phone = (req.nextUrl.searchParams.get("phone") || "").replace(/\D/g, "");
+    if (!orderId || !phone) return json({ error: "Buyurtma raqami va telefon raqamini kiriting" }, 400);
+    const order: any = await env.DB.prepare("SELECT id,customer_name,phone,items,total,status,created_at FROM orders WHERE id=? AND replace(replace(replace(replace(replace(phone,' ',''),'-',''),'(',''),')',''),'+','')=?").bind(orderId, phone).first();
+    if (!order) return json({ error: "Buyurtma topilmadi. Raqam va telefonni tekshiring" }, 404);
+    return json({ order: { ...order, items: JSON.parse(order.items) } });
+  }
   const admin = req.nextUrl.searchParams.get("admin") === "1";
   if (admin && !authed(req)) return json({ error: "Kirish talab qilinadi" }, 401);
   const db = env.DB;
