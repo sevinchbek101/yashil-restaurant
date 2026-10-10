@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     const orderId = Number(req.nextUrl.searchParams.get("order"));
     const phone = (req.nextUrl.searchParams.get("phone") || "").replace(/\D/g, "");
     if (!orderId || !phone) return json({ error: "Buyurtma raqami va telefon raqamini kiriting" }, 400);
-    const order: any = await env.DB.prepare("SELECT id,customer_name,phone,items,total,status,created_at FROM orders WHERE id=? AND replace(replace(replace(replace(replace(phone,' ',''),'-',''),'(',''),')',''),'+','')=?").bind(orderId, phone).first();
+    const order: any = await env.DB.prepare("SELECT id,customer_name,phone,items,subtotal,discount,delivery_fee,total,status,created_at FROM orders WHERE id=? AND replace(replace(replace(replace(replace(phone,' ',''),'-',''),'(',''),')',''),'+','')=?").bind(orderId, phone).first();
     if (!order) return json({ error: "Buyurtma topilmadi. Raqam va telefonni tekshiring" }, 404);
     return json({ order: { ...order, items: JSON.parse(order.items) } });
   }
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     }
     const zone: any = await db.prepare("SELECT fee FROM zones WHERE id=? AND active=1").bind(Number(b.zoneId)).first();
     const fee = Number(zone?.fee || 0), total = subtotal - discount + fee;
-    const result = await db.prepare("INSERT INTO orders(customer_name,customer_email,phone,address,items,subtotal,discount,delivery_fee,total,status,payment) VALUES(?,?,?,?,?,?,?,?,?,'new',?)").bind(b.name,b.email,b.phone,b.address,JSON.stringify(rows),subtotal,discount,fee,total,b.payment||"Naqd").run();
+    const result = await db.prepare("INSERT INTO orders(customer_name,customer_email,phone,address,items,subtotal,discount,delivery_fee,total,status,payment,created_at) VALUES(?,?,?,?,?,?,?,?,?,'new',?,datetime('now'))").bind(b.name,b.email,b.phone,b.address,JSON.stringify(rows),subtotal,discount,fee,total,b.payment||"Naqd").run();
     await db.prepare("INSERT INTO customers(name,email,phone,order_count,total_spent) VALUES(?,?,?,1,?) ON CONFLICT(email) DO UPDATE SET name=excluded.name,phone=excluded.phone,order_count=order_count+1,total_spent=total_spent+excluded.total_spent").bind(b.name,b.email,b.phone,total).run();
     return json({ ok: true, id: result.meta.last_row_id, total, discount });
   }

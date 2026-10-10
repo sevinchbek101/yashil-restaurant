@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { GlobeIcon } from "./icons";
 
 export type Lang = "uz" | "ru" | "en";
 
@@ -19,5 +20,5 @@ export function useLanguage() {
 }
 
 export function LanguageSwitch({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) => void }) {
-  return <div className="langSwitch" aria-label="Language">{(["uz", "ru", "en"] as Lang[]).map(code => <button key={code} className={lang === code ? "active" : ""} onClick={() => setLang(code)}>{code.toUpperCase()}</button>)}</div>;
+  return <div className="langSwitch" aria-label="Language"><GlobeIcon size={16}/>{(["uz", "ru", "en"] as Lang[]).map(code => <button key={code} className={lang === code ? "active" : ""} onClick={() => setLang(code)}>{code.toUpperCase()}</button>)}</div>;
 }

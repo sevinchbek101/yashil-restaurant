@@ -4,13 +4,13 @@ YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, s
 
 ## Joriy versiya
 
-Version 5
+Version 6
 
+- Solar Icons `Broken` uslubidagi yagona ikonka tizimi
+- Kuzatuv sahifasidagi sana va timeline xatolari tuzatilgan
+- Jami narx tarkibi: taomlar, chegirma va yetkazish
 - O‘zbek, rus va ingliz tillari
-- Til tanlovini brauzerda eslab qolish
 - Menyuda nom va tavsif bo‘yicha tezkor qidiruv
-- Kategoriya va qidiruvni birga filtrlash
-- Bosh sahifa, menyu va kuzatish sahifalarining tarjimasi
 - `/track` orqali buyurtma holatini kuzatish
 - `/admin` orqali taomlar va buyurtmalarni boshqarish
 
