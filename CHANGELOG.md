@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 8 — Summa ikonkasini va animatsiyalarni yaxshilash
+
+- Checkout oynasidagi “Taomlar” yozuvi “Summa”ga almashtirildi.
+- Summa qatoriga Solar Icons `Broken` uslubidagi `MoneyBag` ikonka qo‘shildi.
+- Buyurtma yuborish va buyurtma holatini tekshirish tugmalariga aylanuvchi loader qo‘shildi.
+- Admin panel ma’lumotlari yuklanishiga ham loader qo‘shildi.
+- Bosh sahifa va menyu ma’lumotlari yuklanayotganda skeleton kartalar ko‘rsatiladi.
+- Sahifalar, modal oynalar va taom kartalariga silliq kirish animatsiyalari qo‘shildi.
+- Tugmalar uchun hover va bosish mikroanimatsiyalari qo‘shildi.
+- Harakatni kamaytirish tizim sozlamasi qo‘llab-quvvatlandi.
+
+# Changelog
+
 ## Version 7 — Savatga qo‘shish ikonkasini yaxshilash
 
 - “Savatga qo‘shish” tugmalaridagi oddiy `+` belgisi olib tashlandi.

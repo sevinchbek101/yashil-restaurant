@@ -21,6 +21,7 @@ export { HeartPulseIcon } from "@solar-icons/react/broken/heart-pulse";
 export { PhoneIcon } from "@solar-icons/react/broken/phone";
 export { LetterIcon } from "@solar-icons/react/broken/letter";
 export { BillIcon } from "@solar-icons/react/broken/bill";
+export { MoneyBagIcon } from "@solar-icons/react/broken/money-bag";
 export { AddIcon } from "@solar-icons/react/broken/add";
 export { ArrowLeftIcon } from "@solar-icons/react/broken/arrow-left";
 export { MapPointIcon } from "@solar-icons/react/broken/map-point";

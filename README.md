@@ -4,13 +4,15 @@ YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, s
 
 ## Joriy versiya
 
-Version 7
+Version 8
 
-- “Savatga qo‘shish” tugmalarida Solar Broken `CartPlus` ikonkasidan foydalaniladi
-- Oddiy `+` belgisi olib tashlandi
-- Yangi ikonka bosh sahifa va to‘liq menyuda bir xil ishlaydi
+- Checkout oynasidagi noto‘g‘ri “Taomlar” yozuvi “Summa”ga almashtirildi
+- Summa yoniga Solar Broken `MoneyBag` ikonkasi qo‘shildi
+- Buyurtma yuborish va holatni tekshirish tugmalariga animatsiyali loader qo‘shildi
+- Menyu yuklanishida skeleton animatsiya ishlaydi
+- Sahifa, modal va taom kartalariga silliq o‘tish animatsiyalari qo‘shildi
+- Animatsiyalar `prefers-reduced-motion` sozlamasini hurmat qiladi
 - O‘zbek, rus va ingliz tillari
-- Menyuda nom va tavsif bo‘yicha tezkor qidiruv
 - `/track` orqali buyurtma holatini kuzatish
 - `/admin` orqali taomlar va buyurtmalarni boshqarish
 
