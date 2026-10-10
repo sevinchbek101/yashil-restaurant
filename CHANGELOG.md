@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 10 — Antigravity uchun loyiha handoff hujjatlari
+
+- Antigravity va boshqa coding agentlar avtomatik o‘qishi uchun `AGENTS.md` qo‘shildi.
+- Sayt arxitekturasi, sahifalari, funksiyalari, API, D1 sxemasi, dizayn tizimi va xavfsizlik cheklovlari `PROJECT_HANDOFF.md` ichida to‘liq yozildi.
+- Antigravity’ga yuborish uchun tayyor boshlang‘ich prompt qo‘shildi.
+- GitHub versionlash va ChatGPT Sites deployment jarayonlari orasidagi farq hujjatlashtirildi.
+- Bu hujjat yangilanishi; production sayt funksional kodi Version 9 holatida qoladi.
+
+# Changelog
+
 ## Version 9 — Layout va animatsiya tuzatishlari
 
 - Butun sahifaga qo‘llangan `transform` animatsiyasi olib tashlandi.
