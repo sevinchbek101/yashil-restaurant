@@ -4,8 +4,8 @@ YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, s
 
 ## Joriy holat
 
-- Sayt kodi: **Version 15**
-- Hujjatlar: **Version 15**
+- Sayt kodi: **Version 16**
+- Hujjatlar: **Version 16**
 - Logo chapda, menyu markazda joylashgan responsive yuqori navigatsiya
 - Mobil qurilmalar uchun hamburger menyu
 - Nuqtasiz, yumaloq pill ko‘rinishidagi kategoriya tanlash

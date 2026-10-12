@@ -1,6 +1,13 @@
 # Changelog
 
-## Version 15 — Moslashuvchan kuzatuv va rasmiy to‘lov logolari
+## Version 16 — Splash screen animatsiya va yangi shriftlar
+
+- Sayt ochilganda to’liq ekranli splash screen qo’shildi: yashil fonda aylonuvchi loader va "Yuklanmoqda…" yozuvi, keyin "Tayyor" matni pastga tushib keladi; minimum 1.2 soniya ko’rsatiladi.
+- Asosiy shrift `Inter` o’rniga `DM Sans` ga almashtirildi — zamonaviy va o’qilishi qulay.
+- Sarlavhalar (`h1`, `h2`) uchun `Fraunces` serif fonti qo’shildi — editorial va chiroyli ko’rinish.
+- `prefers-reduced-motion` media query’si orqali animatsiya qurilma sozlamasiga hurmat qiladi.
+
+## Version 15 — Moslashuvchan kuzatuv va rasmiy to’lov logolari
 
 - Buyurtmani kuzatishda endi telefon yoki buyurtma ID’sining bittasi yetarli.
 - ID bo‘yicha qidiruv faqat shu buyurtmani, telefon bo‘yicha qidiruv esa shu raqamga tegishli barcha buyurtmalarni ko‘rsatadi.
