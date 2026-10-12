@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 14 — Tanish to‘lov tizimlari bilan sodda tanlov
+
+- Mijozga tushunarsiz “CHECKOUT avto to‘lovi” nomi olib tashlandi.
+- Onlayn to‘lovlar Click, Payme, Uzcard/Humo, Plum, Paylov, Xazna va Oson kartochkalari ko‘rinishida chiqarildi.
+- Istalgan onlayn kartochka tanlanganda avvalgi xavfsiz CHECKOUT.UZ invoice va hosted-payment oqimi ishlashda davom etadi.
+- O‘zbek, rus va ingliz tillaridagi yordamchi matnlar yangilandi.
+- Kartochkalar desktop va mobil ekranlar uchun moslashtirildi.
+- Production build va Version 14 deployment muvaffaqiyatli yakunlandi.
+
 ## Version 13 — CHECKOUT.UZ avtomatik to‘lov
 
 - Buyurtma formasida aniq ikki tanlov qoldirildi: “Olganda to‘layman” va “CHECKOUT avto to‘lovi”.

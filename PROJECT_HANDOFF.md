@@ -1,6 +1,6 @@
 # YASHIL restaurant website — complete project handoff
 
-Last documented state: **Version 13**, 2026-10-12.
+Last documented state: **Version 14**, 2026-10-12.
 
 ## 1. Project identity
 
@@ -9,9 +9,9 @@ Last documented state: **Version 13**, 2026-10-12.
 - Production URL: https://yashil-bowl-uz.apt-snipe-2429.chatgpt.site
 - GitHub repository: https://github.com/sevinchbek101/yashil-restaurant
 - GitHub visibility: private
-- Current GitHub production snapshot branch: `version-13`
-- Current GitHub main state: Version 13, identical to `version-13`
-- Current ChatGPT Sites source commit: `c2e38d32a63357aafba6c3dfe211bcb8161aadc8`
+- Current GitHub production snapshot branch: `version-14`
+- Current GitHub main state: Version 14, identical to `version-14`
+- Current ChatGPT Sites source commit: `4dbdbdf8ab0f9e6ed475cfcc307f0acc574f0153`
 - ChatGPT Sites project ID: `appgprj_6ac9f15ca4dc819190d3d10f464b1d16`
 - Current Site access: public. Customer routes are open; `/admin` and admin API actions require the dedicated admin credential and signed session cookie.
 
@@ -52,7 +52,7 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 - Cart is persisted to localStorage under `yashil:cart`.
 - Cart drawer supports adding duplicate products and removing individual lines.
 - Checkout modal fields: customer name, email, phone, address, delivery zone, payment method, and promo code.
-- Exactly two payment choices are displayed: pay on delivery and CHECKOUT automatic payment. Automatic payment creates an invoice server-side and redirects to CHECKOUT.UZ's hosted page, where the cash desk's enabled Payme, Click, Uzcard/Humo, Plum, or card methods appear.
+- Payment selection shows pay on delivery plus familiar Click, Payme, Uzcard/Humo, Plum, Paylov, Xazna, and Oson cards. Every online card intentionally maps to the same server-side `checkout` payment flow and redirects to CHECKOUT.UZ's hosted page; the final available provider is confirmed there.
 - Checkout summary label is `Summa` / `Сумма` / `Amount`, with a Solar `MoneyBag` icon.
 - Cash submission creates the order and displays its number. CHECKOUT submission stores the order, creates the provider invoice, saves its IDs, and redirects to the hosted payment URL.
 - Last order ID and phone are stored in localStorage under `yashil:lastOrder` for convenient tracking.
@@ -265,6 +265,7 @@ Always verify:
 - Version 11: added the shared responsive header and explicit owner-only admin authorization.
 - Version 12: removed public admin links, added dedicated secret-backed admin login/session, pill category states, Manrope typography, and readable line spacing.
 - Version 13: added pay-on-delivery/CHECKOUT choices, encrypted admin-managed API key, hosted payment redirect, verified webhook handling, and payment-state UI.
+- Version 14: replaced the technical CHECKOUT label with seven recognizable payment-provider cards while preserving the same secure hosted-payment flow.
 
 ## 12. Git and release convention
 
