@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
 import { NextRequest, NextResponse } from "next/server";
+import { isYashilAdmin } from "../../chatgpt-auth";
 
 const json = (data: unknown, status = 200) => NextResponse.json(data, { status });
 
@@ -23,7 +24,7 @@ async function seed() {
 }
 
 function authed(req: NextRequest) {
-  return !!req.headers.get("oai-authenticated-user-id") || process.env.NODE_ENV === "development";
+  return isYashilAdmin(req.headers.get("oai-authenticated-user-id")) || process.env.NODE_ENV === "development";
 }
 
 export async function GET(req: NextRequest) {

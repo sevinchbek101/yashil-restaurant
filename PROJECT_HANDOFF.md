@@ -1,6 +1,6 @@
 # YASHIL restaurant website — complete project handoff
 
-Last documented state: **Version 9**, 2026-10-10.
+Last documented state: **Version 11**, 2026-10-12.
 
 ## 1. Project identity
 
@@ -9,11 +9,11 @@ Last documented state: **Version 9**, 2026-10-10.
 - Production URL: https://yashil-bowl-uz.apt-snipe-2429.chatgpt.site
 - GitHub repository: https://github.com/sevinchbek101/yashil-restaurant
 - GitHub visibility: private
-- Current GitHub production snapshot branch: `version-9`
-- Current GitHub main commit: `c2dc38f98a78961e00e70465e75eb260e4e9ea54`
-- Current ChatGPT Sites source commit: `32a129b9ad9ae5c6266a383435b1cbc4ae0821ad`
+- Current GitHub production snapshot branch: `version-11`
+- Current GitHub main state: Version 11, identical to `version-11`
+- Current ChatGPT Sites source commit: `713667e6db8675b691b5ad57e603f16d55f72a11`
 - ChatGPT Sites project ID: `appgprj_6ac9f15ca4dc819190d3d10f464b1d16`
-- Current Site access: owner-only private/custom access. Only the owner account is allowed.
+- Current Site access: public. Customer routes are open; `/admin` and admin API actions are restricted to the owner account ID.
 
 Important: the GitHub repository and the internal ChatGPT Sites source repository are separate. GitHub is used for backup and numbered version branches. Pushing GitHub does not deploy the live Site.
 
@@ -35,7 +35,7 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 
 ### `/` — storefront/landing page
 
-- Responsive top navigation with Menu, About, Tracking, Admin, language switcher, and Cart.
+- Shared responsive header: logo on the left, centered pill navigation on desktop, language/admin/cart actions on the right, and a hamburger disclosure menu at 1100 px and below.
 - Hero section with the YASHIL slogan, healthy-food photo, explanatory text, and menu CTA.
 - Displays three sample/popular products loaded from D1.
 - Add-to-cart action uses the Solar `CartPlus` icon.
@@ -80,7 +80,7 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
   - Promo codes: create, edit, activate/deactivate, and delete percentage discounts.
   - Settings: shop name, phone, payment methods, minimum order; manage delivery zones and fees.
 - Admin interface is currently Uzbek-only.
-- Critical security note: backend admin authorization currently accepts any request with `oai-authenticated-user-id`. This is acceptable only while the Site remains owner-only. Before public or multi-user access, implement an explicit admin user ID/email allowlist or role table.
+- Admin authorization checks the authenticated ChatGPT user ID against the explicit YASHIL owner allowlist in `app/chatgpt-auth.ts`. Non-owner visitors are redirected from `/admin`, and admin API reads/mutations are rejected.
 
 ## 4. Languages
 
@@ -184,6 +184,7 @@ The API calls `seed()` before reads and writes:
 
 ## 9. Important source files
 
+- `app/site-header.tsx`: shared desktop/mobile header and owner-facing admin navigation.
 - `app/storefront.tsx`: home page and home cart.
 - `app/menu/catalog.tsx`: full menu, search, filters, cart, checkout.
 - `app/track/tracker.tsx`: tracking lookup and timeline.
@@ -240,6 +241,8 @@ Always verify:
 - Version 7: replaced plain plus on add-to-cart with `CartPlus` icon.
 - Version 8: `Summa`/money icon, loaders, skeletons, and transitions.
 - Version 9: fixed horizontal overflow caused by page-level transform animation; kept safe loaders and icons.
+- Version 10: added Antigravity handoff and agent documentation.
+- Version 11: added the shared responsive header and explicit owner-only admin authorization.
 
 ## 12. Git and release convention
 
@@ -253,22 +256,20 @@ Always verify:
 
 ## 13. Highest-priority next work
 
-1. Perform a deliberate responsive-design pass, especially the crowded navigation between 760 px and 1100 px.
-2. Add explicit admin authorization before making the Site public or inviting other viewers.
-3. Separate customer access from admin access so a real restaurant site can be public while `/admin` remains restricted.
-4. Add product quantities and consolidate duplicate cart rows.
-5. Use shop settings dynamically instead of hardcoded phone/payment/minimum order values.
-6. Add robust network error UI and make loading states exit cleanly after failed requests.
-7. Add multilingual database fields for product name/description or a translation table.
-8. Replace image URL-only admin editing with image upload/storage.
-9. Add order notes, delivery phone, and clearer payment-state handling if required.
-10. Add automated unit/API tests and responsive browser tests.
+1. Continue the broader visual-design pass for hero, cards, checkout, tracking, and admin surfaces.
+2. Add product quantities and consolidate duplicate cart rows.
+3. Use shop settings dynamically instead of hardcoded phone/payment/minimum order values.
+4. Add robust network error UI and make loading states exit cleanly after failed requests.
+5. Add multilingual database fields for product name/description or a translation table.
+6. Replace image URL-only admin editing with image upload/storage.
+7. Add order notes, delivery phone, and clearer payment-state handling if required.
+8. Add automated unit/API tests and responsive browser tests.
+9. After the current site is finished, create a separate PHP implementation; no database choice has been made yet.
 
 ## 14. Known limitations and cautions
 
-- The live Site is private, so normal restaurant customers cannot currently open it without access.
 - Payment integrations are not implemented.
-- Admin authorization is generic signed-in-user authorization, not role-based authorization.
+- Admin access uses a single hardcoded owner ID allowlist, not a database-backed role system.
 - No inventory counts, modifier options, product quantities, tax logic, refunds, courier accounts, or notifications.
 - Tracking is polling-based, not push/WebSocket-based.
 - Product content is not multilingual.

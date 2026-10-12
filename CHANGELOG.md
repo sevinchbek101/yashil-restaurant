@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 11 — Responsive yuqori menyu va admin xavfsizligi
+
+- Logo chapda, navigatsiya markazda, amallar o‘ngda joylashgan yangi yuqori menyu yaratildi.
+- Bosh sahifa, menyu va buyurtmani kuzatish sahifalari bitta umumiy header komponentiga o‘tkazildi.
+- 1100 px va undan kichik ekranlar uchun hamburger menyu, ixcham til/admin/savat boshqaruvlari qo‘shildi.
+- Joriy sahifa `aria-current` bilan belgilanadi; mobil menyu `aria-expanded` va Escape tugmasini qo‘llaydi.
+- Sayt ommaga ochiq bo‘lgani sababli `/admin` va admin API amallari faqat loyiha egasi ChatGPT hisobiga cheklab qo‘yildi.
+- PHP’ga ko‘chirish sayt dizayni va funksiyalari tugagandan keyingi alohida bosqichga qoldirildi.
+
 ## Version 10 — Antigravity uchun loyiha handoff hujjatlari
 
 - Antigravity va boshqa coding agentlar avtomatik o‘qishi uchun `AGENTS.md` qo‘shildi.

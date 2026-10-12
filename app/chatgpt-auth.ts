@@ -17,6 +17,11 @@ const PERCENT_ENCODED_UTF8 = "percent-encoded-utf-8";
 const SIGN_IN_PATH = "/signin-with-chatgpt";
 const SIGN_OUT_PATH = "/signout-with-chatgpt";
 const CALLBACK_PATH = "/callback";
+const YASHIL_ADMIN_USER_IDS = new Set(["2e1f3950-1280-4e03-ac19-d231f24f4040"]);
+
+export function isYashilAdmin(userId: string | null | undefined): boolean {
+  return !!userId && YASHIL_ADMIN_USER_IDS.has(userId);
+}
 
 export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const requestHeaders = await headers();

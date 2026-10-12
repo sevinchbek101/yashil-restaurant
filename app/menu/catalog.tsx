@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { LanguageSwitch, Lang, useLanguage } from "../language";
-import {CartPlusIcon,CartLargeMinimalisticIcon,CloseCircleIcon,HomeIcon,MagnifierIcon,TrashBinMinimalisticIcon,DeliveryIcon,MoneyBagIcon,RefreshIcon} from "../icons";
+import { Lang, useLanguage } from "../language";
+import {CartPlusIcon,CartLargeMinimalisticIcon,CloseCircleIcon,MagnifierIcon,TrashBinMinimalisticIcon,MoneyBagIcon,RefreshIcon} from "../icons";
+import SiteHeader from "../site-header";
 
 type Product = { id:number; name:string; category:string; description:string; price:number; image:string; badge?:string };
 type Zone = { id:number; name:string; fee:number; eta:string };
@@ -24,7 +25,7 @@ export default function Catalog(){
  const subtotal=useMemo(()=>cart.reduce((s,x)=>s+x.price,0),[cart]);
  async function order(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setBusy(true);const body=Object.fromEntries(new FormData(e.currentTarget));const r=await fetch("/api/data",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({...body,action:"create-order",items:cart})});const d=await r.json();setBusy(false);if(r.ok){localStorage.setItem("yashil:lastOrder",JSON.stringify({id:d.id,phone:String(body.phone)}));setDone(d.id);setCart([])}else alert(d.error||t.error)}
  return <main className="menuPage">
-  <header className="trackNav shell"><a className="logo" href="/">yashil</a><nav className="menuNav"><a className="iconLabel" href="/"><HomeIcon size={18}/>{t.home}</a><a className="iconLabel" href="/track"><DeliveryIcon size={18}/>{t.track}</a><LanguageSwitch lang={lang} setLang={setLang}/><button className="outline iconBtn" onClick={()=>setDrawer(true)}><CartLargeMinimalisticIcon size={19}/>{t.cart} <b>{cart.length}</b></button></nav></header>
+  <SiteHeader lang={lang} setLang={setLang} active="menu" cartCount={cart.length} onCart={()=>setDrawer(true)}/>
   <section className="menuHero shell"><span className="eyebrow">{t.eyebrow}</span><h1>{t.title}</h1><p>{t.intro}</p></section>
   <section className="menuCatalog shell"><div className="menuTools"><div className="tabs">{categoryIds.map((id,i)=><button key={id} className={category===id?"active":""} onClick={()=>setCategory(id)}>{t.cats[i]}</button>)}</div><label className="menuSearch"><MagnifierIcon size={23}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.search}/>{query&&<button className="iconBtn" onClick={()=>setQuery("")} aria-label="Clear"><CloseCircleIcon size={21}/></button>}</label></div><p className="resultCount"><b>{shown.length}</b> {t.found}</p>
    <div className="menuGrid">{catalogLoading?Array.from({length:6},(_,i)=><article className="foodSkeleton" key={i}><i></i><b></b><span></span><span></span></article>):shown.map(x=><article className="food" key={x.id}><div className="foodImg"><img src={x.image} alt={x.name}/>{x.badge&&<span>{x.badge}</span>}</div><h3>{x.name}</h3><p>{x.description}</p><div><b>{money(x.price,lang)}</b><button className="iconBtn" onClick={()=>setCart([...cart,x])}>{addLabel(t.add)}<CartPlusIcon size={20}/></button></div></article>)}</div>{!catalogLoading&&!shown.length&&<p className="empty searchEmpty">{t.none}</p>}
