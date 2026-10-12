@@ -1,6 +1,6 @@
 # YASHIL restaurant website — complete project handoff
 
-Last documented state: **Version 14**, 2026-10-12.
+Last documented state: **Version 15**, 2026-10-12.
 
 ## 1. Project identity
 
@@ -9,9 +9,9 @@ Last documented state: **Version 14**, 2026-10-12.
 - Production URL: https://yashil-bowl-uz.apt-snipe-2429.chatgpt.site
 - GitHub repository: https://github.com/sevinchbek101/yashil-restaurant
 - GitHub visibility: private
-- Current GitHub production snapshot branch: `version-14`
-- Current GitHub main state: Version 14, identical to `version-14`
-- Current ChatGPT Sites source commit: `4dbdbdf8ab0f9e6ed475cfcc307f0acc574f0153`
+- Current GitHub production snapshot branch: `version-15`
+- Current GitHub main state: Version 15, identical to `version-15`
+- Current ChatGPT Sites source commit: `9470294632c8258c86210ca0def574010eb1223b`
 - ChatGPT Sites project ID: `appgprj_6ac9f15ca4dc819190d3d10f464b1d16`
 - Current Site access: public. Customer routes are open; `/admin` and admin API actions require the dedicated admin credential and signed session cookie.
 
@@ -52,7 +52,7 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 - Cart is persisted to localStorage under `yashil:cart`.
 - Cart drawer supports adding duplicate products and removing individual lines.
 - Checkout modal fields: customer name, email, phone, address, delivery zone, payment method, and promo code.
-- Payment selection shows pay on delivery plus familiar Click, Payme, Uzcard/Humo, Plum, Paylov, Xazna, and Oson cards. Every online card intentionally maps to the same server-side `checkout` payment flow and redirects to CHECKOUT.UZ's hosted page; the final available provider is confirmed there.
+- Payment selection shows pay on delivery plus official-image Click, Payme, Uzcard, Humo, Plum, Paylov, Xazna, and Oson cards. Every online card intentionally maps to the same server-side `checkout` payment flow and redirects to CHECKOUT.UZ's hosted page; the final available provider is confirmed there.
 - Checkout summary label is `Summa` / `Сумма` / `Amount`, with a Solar `MoneyBag` icon.
 - Cash submission creates the order and displays its number. CHECKOUT submission stores the order, creates the provider invoice, saves its IDs, and redirects to the hosted payment URL.
 - Last order ID and phone are stored in localStorage under `yashil:lastOrder` for convenient tracking.
@@ -61,7 +61,8 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 
 ### `/track` — order tracking
 
-- Requires order number and the same phone number entered at checkout.
+- Accepts either an order number or a phone number; both are no longer required.
+- An order-number lookup returns one order. A phone-only lookup returns every order associated with the normalized phone number, newest first.
 - Prefills the most recent order details from `yashil:lastOrder` when available.
 - Shows customer, order items, subtotal, discount, delivery fee, total, creation time, and status timeline.
 - Status sequence: `new` → `preparing` → `delivery` → `done`; `cancelled` is separate.
@@ -173,7 +174,8 @@ All functionality currently uses `app/api/data/route.ts`.
 ### Tracking GET
 
 - `GET /api/data?track=1&order=<id>&phone=<phone>`
-- Requires both order ID and normalized phone digits.
+- Requires either an order ID or normalized phone digits.
+- An ID query returns one order; a phone query returns all matching orders, newest first, in `orders` while retaining the first result as `order` for compatibility.
 - Returns only customer-visible order fields and parsed items.
 
 ### Admin GET
@@ -213,6 +215,7 @@ The API calls `seed()` before reads and writes:
 - `app/language.tsx`: three-language state and switcher.
 - `app/icons.ts`: centralized Solar Broken icon exports.
 - `app/globals.css`: main design and responsive styles.
+- `public/payment-logos/`: trimmed Click, Payme, Uzcard, Humo, Plum, Paylov, Xazna, and Oson image assets.
 - `db/schema.ts`: Drizzle schema.
 - `drizzle/0000_striped_prism.sql`: first D1 migration.
 - `drizzle/0001_ambiguous_dormammu.sql`: payment status and CHECKOUT invoice ID migration.
@@ -265,7 +268,8 @@ Always verify:
 - Version 11: added the shared responsive header and explicit owner-only admin authorization.
 - Version 12: removed public admin links, added dedicated secret-backed admin login/session, pill category states, Manrope typography, and readable line spacing.
 - Version 13: added pay-on-delivery/CHECKOUT choices, encrypted admin-managed API key, hosted payment redirect, verified webhook handling, and payment-state UI.
-- Version 14: replaced the technical CHECKOUT label with seven recognizable payment-provider cards while preserving the same secure hosted-payment flow.
+- Version 14: replaced the technical CHECKOUT label with recognizable payment-provider cards while preserving the same secure hosted-payment flow.
+- Version 15: added ID-or-phone tracking, phone history results, and official payment-provider logo assets.
 
 ## 12. Git and release convention
 
@@ -295,7 +299,7 @@ Always verify:
 - CHECKOUT.UZ is implemented, but remains disabled until a valid API key is saved in the admin panel. Payment-method availability is controlled by the CHECKOUT.UZ cash desk.
 - Admin access currently uses one temporary shared credential, not multiple users, roles, lockout, or database-backed access control.
 - No inventory counts, modifier options, product quantities, tax logic, refunds, courier accounts, or notifications.
-- Delivery tracking is polling-based, not push/WebSocket-based. CHECKOUT webhooks are best-effort, so a future scheduled reconciliation job is recommended for missed notifications.
+- Delivery tracking is polling-based, not push/WebSocket-based. Order IDs are sequential and ID-only lookup exposes the limited customer-visible tracking record, so use non-guessable public tracking tokens before handling sensitive order data. CHECKOUT webhooks are best-effort, so a future scheduled reconciliation job is recommended for missed notifications.
 - Product content is not multilingual.
 - External Unsplash images can change or fail; production assets should eventually be stored under project control.
 - The initial SQL migration uses a quoted `CURRENT_TIMESTAMP` default, while new orders explicitly save `datetime('now')`. Preserve the explicit insert behavior and use a corrective migration if the schema is cleaned up.

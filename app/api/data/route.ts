@@ -42,10 +42,18 @@ export async function GET(req: NextRequest) {
   if (req.nextUrl.searchParams.get("track") === "1") {
     const orderId = Number(req.nextUrl.searchParams.get("order"));
     const phone = (req.nextUrl.searchParams.get("phone") || "").replace(/\D/g, "");
-    if (!orderId || !phone) return json({ error: "Buyurtma raqami va telefon raqamini kiriting" }, 400);
-    const order: any = await env.DB.prepare("SELECT id,customer_name,phone,items,subtotal,discount,delivery_fee,total,status,payment,payment_status,created_at FROM orders WHERE id=? AND replace(replace(replace(replace(replace(phone,' ',''),'-',''),'(',''),')',''),'+','')=?").bind(orderId, phone).first();
-    if (!order) return json({ error: "Buyurtma topilmadi. Raqam va telefonni tekshiring" }, 404);
-    return json({ order: { ...order, items: JSON.parse(order.items) } });
+    if (!orderId && !phone) return json({ error: "Buyurtma raqami yoki telefon raqamidan birini kiriting" }, 400);
+    const fields = "id,customer_name,phone,items,subtotal,discount,delivery_fee,total,status,payment,payment_status,created_at";
+    let orders: any[];
+    if (orderId) {
+      const order = await env.DB.prepare(`SELECT ${fields} FROM orders WHERE id=?`).bind(orderId).first();
+      orders = order ? [order] : [];
+    } else {
+      orders = (await env.DB.prepare(`SELECT ${fields} FROM orders WHERE replace(replace(replace(replace(replace(phone,' ',''),'-',''),'(',''),')',''),'+','')=? ORDER BY id DESC`).bind(phone).all()).results as any[];
+    }
+    if (!orders.length) return json({ error: "Buyurtma topilmadi. Raqam yoki telefonni tekshiring" }, 404);
+    const parsedOrders = orders.map((order: any) => ({ ...order, items: JSON.parse(order.items) }));
+    return json({ order: parsedOrders[0], orders: parsedOrders });
   }
   const admin = req.nextUrl.searchParams.get("admin") === "1";
   if (admin && !(await authed(req))) return json({ error: "Kirish talab qilinadi" }, 401);

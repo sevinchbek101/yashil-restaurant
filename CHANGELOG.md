@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 15 — Moslashuvchan kuzatuv va rasmiy to‘lov logolari
+
+- Buyurtmani kuzatishda endi telefon yoki buyurtma ID’sining bittasi yetarli.
+- ID bo‘yicha qidiruv faqat shu buyurtmani, telefon bo‘yicha qidiruv esa shu raqamga tegishli barcha buyurtmalarni ko‘rsatadi.
+- Bir nechta natija alohida kuzatuv kartalarida chiqadi va faol buyurtmalar har 10 soniyada yangilanadi.
+- Kuzatuv ko‘rsatmalari o‘zbek, rus va ingliz tillarida yangilandi.
+- Click, Payme, Uzcard, Humo, Plum, Paylov, Xazna va Oson rasmlari tozalab kesildi va haqiqiy logo sifatida kartochkalarga qo‘yildi.
+- Avto to‘lov oqimi o‘zgarmadi va foydalanuvchi tekshiruvida muvaffaqiyatli ishladi.
+- Production build va Version 15 deployment muvaffaqiyatli yakunlandi.
+
 ## Version 14 — Tanish to‘lov tizimlari bilan sodda tanlov
 
 - Mijozga tushunarsiz “CHECKOUT avto to‘lovi” nomi olib tashlandi.
