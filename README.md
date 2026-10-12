@@ -4,16 +4,16 @@ YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, s
 
 ## Joriy holat
 
-- Sayt kodi: **Version 12**
-- Hujjatlar: **Version 12**
+- Sayt kodi: **Version 13**
+- Hujjatlar: **Version 13**
 - Logo chapda, menyu markazda joylashgan responsive yuqori navigatsiya
 - Mobil qurilmalar uchun hamburger menyu
 - Nuqtasiz, yumaloq pill ko‘rinishidagi kategoriya tanlash
 - O‘zbek, rus va ingliz tillari
 - Solar Icons `Broken` uslubidagi yagona ikonka tizimi
-- Menyu qidiruvi, kategoriya filtrlari, savat va checkout
-- `/track` orqali buyurtma holatini kuzatish
-- `/admin` orqali login/parol bilan himoyalangan boshqaruv paneli; admin havolasi ommaviy navigatsiyada ko‘rsatilmaydi
+- Menyu qidiruvi, kategoriya filtrlari, savat va ikki usulli checkout: olganda to‘lash yoki CHECKOUT.UZ avto to‘lovi
+- `/track` orqali buyurtma va to‘lov holatini kuzatish
+- `/admin` orqali login/parol bilan himoyalangan boshqaruv paneli; CHECKOUT.UZ API kaliti shu panelda kiritiladi, shifrlanadi va brauzerga qaytarilmaydi
 - Cloudflare D1 ma’lumotlar bazasi
 
 ## Antigravity bilan davom ettirish

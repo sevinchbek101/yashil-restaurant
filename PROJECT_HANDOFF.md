@@ -1,6 +1,6 @@
 # YASHIL restaurant website — complete project handoff
 
-Last documented state: **Version 12**, 2026-10-12.
+Last documented state: **Version 13**, 2026-10-12.
 
 ## 1. Project identity
 
@@ -9,9 +9,9 @@ Last documented state: **Version 12**, 2026-10-12.
 - Production URL: https://yashil-bowl-uz.apt-snipe-2429.chatgpt.site
 - GitHub repository: https://github.com/sevinchbek101/yashil-restaurant
 - GitHub visibility: private
-- Current GitHub production snapshot branch: `version-12`
-- Current GitHub main state: Version 12, identical to `version-12`
-- Current ChatGPT Sites source commit: `677381028a2a090cb1056d5aa2623f2bc9d63340`
+- Current GitHub production snapshot branch: `version-13`
+- Current GitHub main state: Version 13, identical to `version-13`
+- Current ChatGPT Sites source commit: `c2e38d32a63357aafba6c3dfe211bcb8161aadc8`
 - ChatGPT Sites project ID: `appgprj_6ac9f15ca4dc819190d3d10f464b1d16`
 - Current Site access: public. Customer routes are open; `/admin` and admin API actions require the dedicated admin credential and signed session cookie.
 
@@ -29,7 +29,7 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 - Tailwind CSS 4 is installed, but the visible custom design is mainly in `app/globals.css`
 - Solar Icons React package 2.3.2, consistently using the `Broken` icon style
 - Images currently load from Unsplash URLs
-- Sites runtime secrets store admin credentials; Web Crypto HMAC signs a 12-hour HttpOnly/Secure/SameSite=Strict admin session cookie
+- Sites runtime secrets store admin credentials, the CHECKOUT encryption key, and webhook URL secret; Web Crypto HMAC signs a 12-hour HttpOnly/Secure/SameSite=Strict admin session cookie
 
 ## 3. Main routes and user experience
 
@@ -52,9 +52,9 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 - Cart is persisted to localStorage under `yashil:cart`.
 - Cart drawer supports adding duplicate products and removing individual lines.
 - Checkout modal fields: customer name, email, phone, address, delivery zone, payment method, and promo code.
-- Payment options displayed: cash, Payme, Click. There is no real payment gateway yet; the chosen method is only saved as text.
+- Exactly two payment choices are displayed: pay on delivery and CHECKOUT automatic payment. Automatic payment creates an invoice server-side and redirects to CHECKOUT.UZ's hosted page, where the cash desk's enabled Payme, Click, Uzcard/Humo, Plum, or card methods appear.
 - Checkout summary label is `Summa` / `Сумма` / `Amount`, with a Solar `MoneyBag` icon.
-- Submitting creates an order through `POST /api/data` and displays the order number.
+- Cash submission creates the order and displays its number. CHECKOUT submission stores the order, creates the provider invoice, saves its IDs, and redirects to the hosted payment URL.
 - Last order ID and phone are stored in localStorage under `yashil:lastOrder` for convenient tracking.
 - Animated loading indicator appears while submitting. Product placeholders appear while catalog data loads.
 - Limitation: there is no quantity selector. Repeated clicks create repeated cart lines.
@@ -68,6 +68,7 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 - Refreshes the order status automatically every 10 seconds until done/cancelled.
 - Uses Solar icons for the steps and loading feedback.
 - The total breakdown and invalid legacy date handling were fixed in Version 6.
+- Version 13 shows the payment state and automatically looks up the last order after a successful CHECKOUT return.
 
 ### `/admin/login` — admin sign-in
 
@@ -84,9 +85,16 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
   - Orders: view orders and change their statuses.
   - Customers: view email, phone, order count, and total spent.
   - Promo codes: create, edit, activate/deactivate, and delete percentage discounts.
-  - Settings: shop name, phone, payment methods, minimum order; manage delivery zones and fees.
+  - Settings: shop name, phone, minimum order, delivery zones/fees, and CHECKOUT.UZ API key configuration.
 - Admin interface is currently Uzbek-only.
 - Admin authorization verifies the signed `yashil_admin_session` cookie in both the page and admin API. Production credentials and signing secret stay in Sites runtime secrets.
+
+### CHECKOUT.UZ runtime security
+
+- `YASHIL_SETTINGS_ENCRYPTION_SECRET`: secret used to derive the AES-GCM key that encrypts the API key before D1 storage.
+- `YASHIL_CHECKOUT_WEBHOOK_SECRET`: unguessable query token on the webhook URL.
+- The API key itself is entered in the authenticated admin panel, validated with `get_payment_methods`, encrypted at rest, and never included in admin/public GET responses.
+- Webhook events are not trusted directly: the server calls `status_payment` and verifies both paid status and amount before marking the local order paid.
 
 ## 4. Languages
 
@@ -136,7 +144,7 @@ Style direction:
 - `id`, `customer_name`, `customer_email`, `phone`, `address`
 - `items` stored as JSON text containing server-selected product IDs, names, and prices
 - `subtotal`, `discount`, `delivery_fee`, `total`
-- `status`, `payment`, `created_at`
+- `status`, `payment`, `payment_status`, nullable `checkout_payment_id`, nullable `checkout_payment_uuid`, `created_at`
 
 ### `promos`
 
@@ -150,7 +158,7 @@ Style direction:
 
 ### `settings`
 
-- key/value store for shop name, phone, payment list, and minimum order.
+- key/value store for shop name, phone, minimum order, and the AES-GCM-encrypted CHECKOUT.UZ API key.
 - Current limitation: several storefront values are still hardcoded and do not read these settings dynamically.
 
 ## 7. API contract
@@ -160,7 +168,7 @@ All functionality currently uses `app/api/data/route.ts`.
 ### Public/customer GET
 
 - `GET /api/data`
-- Returns available products and active delivery zones.
+- Returns available products, active delivery zones, and `checkoutEnabled` so automatic payment is disabled until a valid key is configured.
 
 ### Tracking GET
 
@@ -177,7 +185,7 @@ All functionality currently uses `app/api/data/route.ts`.
 ### POST actions
 
 - `create-order` is customer-accessible.
-- Admin-session-authenticated actions: `save-product`, `delete-product`, `order-status`, `save-promo`, `delete-promo`, `save-zone`, `delete-zone`, `save-settings`.
+- Admin-session-authenticated actions: `save-product`, `delete-product`, `order-status`, `save-promo`, `delete-promo`, `save-zone`, `delete-zone`, `save-settings`, `save-checkout-api`, and `remove-checkout-api`.
 - Order creation does not trust browser prices. It rereads product prices and availability from D1 before calculating subtotal, discount, fee, and total.
 
 ## 8. Seed behavior
@@ -198,13 +206,16 @@ The API calls `seed()` before reads and writes:
 - `app/menu/catalog.tsx`: full menu, search, filters, cart, checkout.
 - `app/track/tracker.tsx`: tracking lookup and timeline.
 - `app/admin/panel.tsx`: entire admin client interface.
-- `app/api/data/route.ts`: API, seed logic, order creation, and admin mutations.
+- `app/api/data/route.ts`: API, seed logic, order creation, CHECKOUT invoice creation, and admin mutations.
+- `app/checkout.ts`: encrypted API-key storage and CHECKOUT.UZ API helper.
+- `app/api/checkout/webhook/route.ts`: private-token webhook with provider status and amount re-verification.
 - `app/chatgpt-auth.ts`: Sign in with ChatGPT helpers.
 - `app/language.tsx`: three-language state and switcher.
 - `app/icons.ts`: centralized Solar Broken icon exports.
 - `app/globals.css`: main design and responsive styles.
 - `db/schema.ts`: Drizzle schema.
 - `drizzle/0000_striped_prism.sql`: first D1 migration.
+- `drizzle/0001_ambiguous_dormammu.sql`: payment status and CHECKOUT invoice ID migration.
 - `.openai/hosting.json`: Sites project identity and D1 binding.
 - `package.json`: commands and dependencies.
 
@@ -253,6 +264,7 @@ Always verify:
 - Version 10: added Antigravity handoff and agent documentation.
 - Version 11: added the shared responsive header and explicit owner-only admin authorization.
 - Version 12: removed public admin links, added dedicated secret-backed admin login/session, pill category states, Manrope typography, and readable line spacing.
+- Version 13: added pay-on-delivery/CHECKOUT choices, encrypted admin-managed API key, hosted payment redirect, verified webhook handling, and payment-state UI.
 
 ## 12. Git and release convention
 
@@ -273,16 +285,16 @@ Always verify:
 5. Add robust network error UI and make loading states exit cleanly after failed requests.
 6. Add multilingual database fields for product name/description or a translation table.
 7. Replace image URL-only admin editing with image upload/storage.
-8. Add order notes, delivery phone, and clearer payment-state handling if required.
+8. Add order notes, delivery phone, refund/cancellation reconciliation, and periodic payment-status recovery for missed webhooks.
 9. Add automated unit/API tests and responsive browser tests.
 10. After the current site is finished, create a separate PHP implementation; no database choice has been made yet.
 
 ## 14. Known limitations and cautions
 
-- Payment integrations are not implemented.
+- CHECKOUT.UZ is implemented, but remains disabled until a valid API key is saved in the admin panel. Payment-method availability is controlled by the CHECKOUT.UZ cash desk.
 - Admin access currently uses one temporary shared credential, not multiple users, roles, lockout, or database-backed access control.
 - No inventory counts, modifier options, product quantities, tax logic, refunds, courier accounts, or notifications.
-- Tracking is polling-based, not push/WebSocket-based.
+- Delivery tracking is polling-based, not push/WebSocket-based. CHECKOUT webhooks are best-effort, so a future scheduled reconciliation job is recommended for missed notifications.
 - Product content is not multilingual.
 - External Unsplash images can change or fail; production assets should eventually be stored under project control.
 - The initial SQL migration uses a quoted `CURRENT_TIMESTAMP` default, while new orders explicitly save `datetime('now')`. Preserve the explicit insert behavior and use a corrective migration if the schema is cleaned up.

@@ -1,6 +1,15 @@
 import { env } from "cloudflare:workers";
 import { NextRequest, NextResponse } from "next/server";
 import { sessionFromCookieHeader, verifyAdminSession } from "../../admin-auth";
+import {
+  checkoutIsConfigured,
+  checkoutRequest,
+  checkoutWebhookSecret,
+  getCheckoutApiKey,
+  removeCheckoutApiKey,
+  safeCheckoutError,
+  saveCheckoutApiKey,
+} from "../../checkout";
 
 const json = (data: unknown, status = 200) => NextResponse.json(data, { status });
 
@@ -34,7 +43,7 @@ export async function GET(req: NextRequest) {
     const orderId = Number(req.nextUrl.searchParams.get("order"));
     const phone = (req.nextUrl.searchParams.get("phone") || "").replace(/\D/g, "");
     if (!orderId || !phone) return json({ error: "Buyurtma raqami va telefon raqamini kiriting" }, 400);
-    const order: any = await env.DB.prepare("SELECT id,customer_name,phone,items,subtotal,discount,delivery_fee,total,status,created_at FROM orders WHERE id=? AND replace(replace(replace(replace(replace(phone,' ',''),'-',''),'(',''),')',''),'+','')=?").bind(orderId, phone).first();
+    const order: any = await env.DB.prepare("SELECT id,customer_name,phone,items,subtotal,discount,delivery_fee,total,status,payment,payment_status,created_at FROM orders WHERE id=? AND replace(replace(replace(replace(replace(phone,' ',''),'-',''),'(',''),')',''),'+','')=?").bind(orderId, phone).first();
     if (!order) return json({ error: "Buyurtma topilmadi. Raqam va telefonni tekshiring" }, 404);
     return json({ order: { ...order, items: JSON.parse(order.items) } });
   }
@@ -44,7 +53,8 @@ export async function GET(req: NextRequest) {
   const products = (await db.prepare(`SELECT * FROM products ${admin ? "" : "WHERE available=1"} ORDER BY id DESC`).all()).results;
   if (!admin) {
     const zones = (await db.prepare("SELECT * FROM zones WHERE active=1 ORDER BY fee").all()).results;
-    return json({ products, zones });
+    const checkoutEnabled = await checkoutIsConfigured(db);
+    return json({ products, zones, checkoutEnabled });
   }
   const [orders, customers, promos, zones, settings] = await Promise.all([
     db.prepare("SELECT * FROM orders ORDER BY id DESC").all(),
@@ -54,7 +64,8 @@ export async function GET(req: NextRequest) {
     db.prepare("SELECT * FROM settings").all(),
   ]);
   const stats = await db.prepare("SELECT COUNT(*) orders,COALESCE(SUM(total),0) revenue,COALESCE(AVG(total),0) avg_order,SUM(CASE WHEN status='new' THEN 1 ELSE 0 END) new_orders FROM orders").first();
-  return json({ products, orders: orders.results, customers: customers.results, promos: promos.results, zones: zones.results, settings: Object.fromEntries(settings.results.map((x: any) => [x.key, x.value])), stats });
+  const publicSettings = Object.fromEntries(settings.results.filter((x: any) => x.key !== "checkout_api_key_encrypted").map((x: any) => [x.key, x.value]));
+  return json({ products, orders: orders.results, customers: customers.results, promos: promos.results, zones: zones.results, settings: publicSettings, checkout_configured: settings.results.some((x: any) => x.key === "checkout_api_key_encrypted"), stats });
 }
 
 export async function POST(req: NextRequest) {
@@ -63,6 +74,9 @@ export async function POST(req: NextRequest) {
   const b: any = await req.json();
   if (b.action === "create-order") {
     if (!b.name || !b.email || !b.phone || !b.address || !Array.isArray(b.items) || !b.items.length) return json({ error: "Barcha maydonlarni to‘ldiring" }, 400);
+    const paymentMethod = b.payment === "checkout" ? "checkout" : "cash_on_delivery";
+    const checkoutApiKey = paymentMethod === "checkout" ? await getCheckoutApiKey(db) : null;
+    if (paymentMethod === "checkout" && !checkoutApiKey) return json({ error: "CHECKOUT avto to‘lovi hali admin panelda sozlanmagan" }, 503);
     const ids = b.items.map((x: any) => Number(x.id)).filter(Boolean);
     const rows = (await db.prepare(`SELECT id,name,price FROM products WHERE available=1 AND id IN (${ids.map(() => "?").join(",")})`).bind(...ids).all()).results as any[];
     const subtotal = rows.reduce((sum, x) => sum + Number(x.price), 0);
@@ -73,9 +87,37 @@ export async function POST(req: NextRequest) {
     }
     const zone: any = await db.prepare("SELECT fee FROM zones WHERE id=? AND active=1").bind(Number(b.zoneId)).first();
     const fee = Number(zone?.fee || 0), total = subtotal - discount + fee;
-    const result = await db.prepare("INSERT INTO orders(customer_name,customer_email,phone,address,items,subtotal,discount,delivery_fee,total,status,payment,created_at) VALUES(?,?,?,?,?,?,?,?,?,'new',?,datetime('now'))").bind(b.name,b.email,b.phone,b.address,JSON.stringify(rows),subtotal,discount,fee,total,b.payment||"Naqd").run();
+    if (total < 1000 || total > 10000000) return json({ error: "To‘lov summasi 1 000 dan 10 000 000 so‘mgacha bo‘lishi kerak" }, 400);
+    const initialPaymentStatus = paymentMethod === "checkout" ? "initiating" : "unpaid";
+    const result = await db.prepare("INSERT INTO orders(customer_name,customer_email,phone,address,items,subtotal,discount,delivery_fee,total,status,payment,payment_status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'new',?,?,datetime('now'))").bind(b.name,b.email,b.phone,b.address,JSON.stringify(rows),subtotal,discount,fee,total,paymentMethod,initialPaymentStatus).run();
+    const orderId = Number(result.meta.last_row_id);
+    let paymentUrl: string | undefined;
+
+    if (paymentMethod === "checkout" && checkoutApiKey) {
+      const webhookSecret = checkoutWebhookSecret();
+      if (!webhookSecret) {
+        await db.prepare("DELETE FROM orders WHERE id=?").bind(orderId).run();
+        return json({ error: "Webhook xavfsizlik sozlamasi mavjud emas" }, 503);
+      }
+      try {
+        const origin = req.nextUrl.origin;
+        const created: any = await checkoutRequest(checkoutApiKey, "create_payment", {
+          amount: total,
+          description: `YASHIL buyurtma #${orderId}`,
+          webhook_url: `${origin}/api/checkout/webhook?token=${encodeURIComponent(webhookSecret)}`,
+          return_url: `${origin}/track?payment=returned`,
+        });
+        const providerPayment = created?.payment;
+        if (!providerPayment?._id || !providerPayment?._uuid || !providerPayment?._url || Number(providerPayment._amount) !== total) throw new Error("CHECKOUT.UZ noto‘g‘ri invoice qaytardi");
+        await db.prepare("UPDATE orders SET payment_status='pending',checkout_payment_id=?,checkout_payment_uuid=? WHERE id=?").bind(Number(providerPayment._id),String(providerPayment._uuid),orderId).run();
+        paymentUrl = String(providerPayment._url);
+      } catch (error) {
+        await db.prepare("DELETE FROM orders WHERE id=?").bind(orderId).run();
+        return json({ error: safeCheckoutError(error) }, 502);
+      }
+    }
     await db.prepare("INSERT INTO customers(name,email,phone,order_count,total_spent) VALUES(?,?,?,1,?) ON CONFLICT(email) DO UPDATE SET name=excluded.name,phone=excluded.phone,order_count=order_count+1,total_spent=total_spent+excluded.total_spent").bind(b.name,b.email,b.phone,total).run();
-    return json({ ok: true, id: result.meta.last_row_id, total, discount });
+    return json({ ok: true, id: orderId, total, discount, paymentUrl });
   }
   if (!(await authed(req))) return json({ error: "Ruxsat yo‘q" }, 403);
   const q = (sql: string, ...args: any[]) => db.prepare(sql).bind(...args).run();
@@ -93,7 +135,23 @@ export async function POST(req: NextRequest) {
       if (b.id) await q("UPDATE zones SET name=?,fee=?,eta=?,active=? WHERE id=?",b.name,Number(b.fee),b.eta,b.active?1:0,Number(b.id));
       else await q("INSERT INTO zones(name,fee,eta,active) VALUES(?,?,?,?)",b.name,Number(b.fee),b.eta,b.active?1:0); break;
     case "delete-zone": await q("DELETE FROM zones WHERE id=?",Number(b.id)); break;
-    case "save-settings": for (const [k,v] of Object.entries(b.settings||{})) await q("INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",k,String(v)); break;
+    case "save-checkout-api": {
+      const apiKey = String(b.apiKey || "").trim();
+      if (apiKey.length < 12) return json({ error: "CHECKOUT.UZ API kalitini to‘liq kiriting" }, 400);
+      try {
+        const methods: any = await checkoutRequest(apiKey, "get_payment_methods");
+        await saveCheckoutApiKey(db, apiKey);
+        return json({ ok: true, methods: Array.isArray(methods?.data) ? methods.data.map((method: any) => ({ key: method.key, name: method.name })) : [] });
+      } catch (error) {
+        return json({ error: safeCheckoutError(error) }, 400);
+      }
+    }
+    case "remove-checkout-api": await removeCheckoutApiKey(db); break;
+    case "save-settings": {
+      const allowed = new Set(["store_name", "phone", "min_order"]);
+      for (const [k,v] of Object.entries(b.settings||{})) if (allowed.has(k)) await q("INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",k,String(v));
+      break;
+    }
     default: return json({ error: "Noma’lum amal" }, 400);
   }
   return json({ ok: true });

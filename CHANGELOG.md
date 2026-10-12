@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 13 — CHECKOUT.UZ avtomatik to‘lov
+
+- Buyurtma formasida aniq ikki tanlov qoldirildi: “Olganda to‘layman” va “CHECKOUT avto to‘lovi”.
+- Avto to‘lov tanlanganda xaridor CHECKOUT.UZ hosting sahifasiga yo‘naltiriladi; unda kassada yoqilgan Payme, Click, Uzcard/Humo va boshqa usullar ko‘rinadi.
+- CHECKOUT.UZ API kalitini admin paneldagi Sozlamalar bo‘limidan kiritish, tekshirish, almashtirish va o‘chirish qo‘shildi.
+- API kaliti AES-GCM bilan shifrlanib D1 bazasida saqlanadi; shifrlash kaliti alohida Sites runtime secret bo‘lib, API kaliti brauzerga qaytarilmaydi.
+- Imzosiz webhook uchun maxfiy URL tokeni va server tomonda `status_payment` orqali qayta tekshirish qo‘shildi.
+- To‘lov holati admin buyurtmalarida va mijozning kuzatish sahifasida ko‘rsatiladi.
+- CHECKOUT’dan qaytilganda oxirgi buyurtma avtomatik tekshiriladi.
+- `orders` jadvaliga to‘lov holati va CHECKOUT invoice identifikatorlari uchun yangi D1 migratsiya qo‘shildi.
+- Production build va Version 13 deployment muvaffaqiyatli yakunlandi.
+
 ## Version 12 — Alohida admin login va o‘qilishi yaxshilangan dizayn
 
 - Ommaviy desktop va mobil navigatsiyadan Admin tugmasi olib tashlandi.
