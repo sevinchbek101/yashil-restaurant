@@ -4,15 +4,16 @@ YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, s
 
 ## Joriy holat
 
-- Sayt kodi: **Version 11**
-- Hujjatlar: **Version 11**
+- Sayt kodi: **Version 12**
+- Hujjatlar: **Version 12**
 - Logo chapda, menyu markazda joylashgan responsive yuqori navigatsiya
 - Mobil qurilmalar uchun hamburger menyu
+- Nuqtasiz, yumaloq pill ko‘rinishidagi kategoriya tanlash
 - O‘zbek, rus va ingliz tillari
 - Solar Icons `Broken` uslubidagi yagona ikonka tizimi
 - Menyu qidiruvi, kategoriya filtrlari, savat va checkout
 - `/track` orqali buyurtma holatini kuzatish
-- `/admin` orqali taomlar va buyurtmalarni boshqarish; admin va admin API faqat loyiha egasi hisobiga ruxsat beradi
+- `/admin` orqali login/parol bilan himoyalangan boshqaruv paneli; admin havolasi ommaviy navigatsiyada ko‘rsatilmaydi
 - Cloudflare D1 ma’lumotlar bazasi
 
 ## Antigravity bilan davom ettirish

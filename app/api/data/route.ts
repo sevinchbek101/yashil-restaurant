@@ -1,6 +1,6 @@
 import { env } from "cloudflare:workers";
 import { NextRequest, NextResponse } from "next/server";
-import { isYashilAdmin } from "../../chatgpt-auth";
+import { sessionFromCookieHeader, verifyAdminSession } from "../../admin-auth";
 
 const json = (data: unknown, status = 200) => NextResponse.json(data, { status });
 
@@ -23,8 +23,9 @@ async function seed() {
   await db.prepare("INSERT OR IGNORE INTO settings(key,value) VALUES('store_name','YASHIL'),('phone','+998 90 123 45 67'),('payments','Naqd,Payme,Click'),('min_order','40000')").run();
 }
 
-function authed(req: NextRequest) {
-  return isYashilAdmin(req.headers.get("oai-authenticated-user-id")) || process.env.NODE_ENV === "development";
+async function authed(req: NextRequest) {
+  if (process.env.NODE_ENV === "development") return true;
+  return verifyAdminSession(sessionFromCookieHeader(req.headers.get("cookie")));
 }
 
 export async function GET(req: NextRequest) {
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
     return json({ order: { ...order, items: JSON.parse(order.items) } });
   }
   const admin = req.nextUrl.searchParams.get("admin") === "1";
-  if (admin && !authed(req)) return json({ error: "Kirish talab qilinadi" }, 401);
+  if (admin && !(await authed(req))) return json({ error: "Kirish talab qilinadi" }, 401);
   const db = env.DB;
   const products = (await db.prepare(`SELECT * FROM products ${admin ? "" : "WHERE available=1"} ORDER BY id DESC`).all()).results;
   if (!admin) {
@@ -76,7 +77,7 @@ export async function POST(req: NextRequest) {
     await db.prepare("INSERT INTO customers(name,email,phone,order_count,total_spent) VALUES(?,?,?,1,?) ON CONFLICT(email) DO UPDATE SET name=excluded.name,phone=excluded.phone,order_count=order_count+1,total_spent=total_spent+excluded.total_spent").bind(b.name,b.email,b.phone,total).run();
     return json({ ok: true, id: result.meta.last_row_id, total, discount });
   }
-  if (!authed(req)) return json({ error: "Ruxsat yo‘q" }, 403);
+  if (!(await authed(req))) return json({ error: "Ruxsat yo‘q" }, 403);
   const q = (sql: string, ...args: any[]) => db.prepare(sql).bind(...args).run();
   switch (b.action) {
     case "save-product":

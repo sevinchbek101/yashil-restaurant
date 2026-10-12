@@ -29,3 +29,6 @@ export { GlobeIcon } from "@solar-icons/react/broken/globe";
 export { HamburgerMenuIcon } from "@solar-icons/react/broken/hamburger-menu";
 export { ShieldUserIcon } from "@solar-icons/react/broken/shield-user";
 export { ClockCircleIcon } from "@solar-icons/react/broken/clock-circle";
+export { LockKeyholeIcon } from "@solar-icons/react/broken/lock-keyhole";
+export { LoginIcon } from "@solar-icons/react/broken/login";
+export { UserIcon } from "@solar-icons/react/broken/user";

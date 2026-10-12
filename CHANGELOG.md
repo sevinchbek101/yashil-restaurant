@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 12 — Alohida admin login va o‘qilishi yaxshilangan dizayn
+
+- Ommaviy desktop va mobil navigatsiyadan Admin tugmasi olib tashlandi.
+- `/admin` manzili alohida login sahifasiga o‘tkazildi.
+- Admin login va paroli Sites runtime secrets ichida saqlanadi; kod va GitHub ichiga production parol yozilmaydi.
+- 12 soatlik, HMAC bilan imzolangan `HttpOnly`, `Secure`, `SameSite=Strict` sessiya cookie’si qo‘shildi.
+- Admin API o‘qish va yozish amallari yangi sessiya bilan himoyalandi.
+- Kategoriya ostidagi nuqta olib tashlanib, faol kategoriya yumaloq pill ichiga olindi.
+- Sarlavha, tavsif va kartalardagi qator oralig‘i o‘qishga qulaylashtirildi.
+- Google Fonts’dagi Manrope shriftiga fallback bilan o‘tildi; Solar Broken ikonka uslubi saqlandi.
+- Login sahifasiga moslashuvchan dizayn va yengil mikroanimatsiyalar qo‘shildi.
+- Build hamda jonli autentifikatsiya holatlari tekshirildi.
+
 ## Version 11 — Responsive yuqori menyu va admin xavfsizligi
 
 - Logo chapda, navigatsiya markazda, amallar o‘ngda joylashgan yangi yuqori menyu yaratildi.

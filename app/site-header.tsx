@@ -6,15 +6,14 @@ import {
   CartLargeMinimalisticIcon,
   CloseCircleIcon,
   HamburgerMenuIcon,
-  ShieldUserIcon,
 } from "./icons";
 
 type ActivePage = "home" | "menu" | "track";
 
 const copy = {
-  uz: { home: "Bosh sahifa", menu: "Menyu", about: "Biz haqimizda", track: "Kuzatish", admin: "Admin", cart: "Savat", open: "Menyuni ochish", close: "Menyuni yopish" },
-  ru: { home: "Главная", menu: "Меню", about: "О нас", track: "Отследить", admin: "Админ", cart: "Корзина", open: "Открыть меню", close: "Закрыть меню" },
-  en: { home: "Home", menu: "Menu", about: "About", track: "Track", admin: "Admin", cart: "Cart", open: "Open menu", close: "Close menu" },
+  uz: { home: "Bosh sahifa", menu: "Menyu", about: "Biz haqimizda", track: "Kuzatish", cart: "Savat", open: "Menyuni ochish", close: "Menyuni yopish" },
+  ru: { home: "Главная", menu: "Меню", about: "О нас", track: "Отследить", cart: "Корзина", open: "Открыть меню", close: "Закрыть меню" },
+  en: { home: "Home", menu: "Menu", about: "About", track: "Track", cart: "Cart", open: "Open menu", close: "Close menu" },
 };
 
 export default function SiteHeader({
@@ -75,7 +74,6 @@ export default function SiteHeader({
 
       <div className="headerActions">
         <div className="desktopLanguage"><LanguageSwitch lang={lang} setLang={setLang}/></div>
-        <a className="headerAdmin" href="/admin" aria-label={t.admin} title={t.admin}><ShieldUserIcon size={20}/></a>
         {onCart
           ? <button className="headerCart" onClick={onCart}>{cartContent}</button>
           : <a className="headerCart" href="/menu">{cartContent}</a>}
@@ -98,7 +96,6 @@ export default function SiteHeader({
           aria-current={active === link.id ? "page" : undefined}
           onClick={() => setMobileOpen(false)}
         >{link.label}</a>)}
-        <a href="/admin" onClick={() => setMobileOpen(false)}>{t.admin}</a>
         <div className="mobileLanguage"><LanguageSwitch lang={lang} setLang={setLang}/></div>
       </nav>
     </div>

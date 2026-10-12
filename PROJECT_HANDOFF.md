@@ -1,6 +1,6 @@
 # YASHIL restaurant website — complete project handoff
 
-Last documented state: **Version 11**, 2026-10-12.
+Last documented state: **Version 12**, 2026-10-12.
 
 ## 1. Project identity
 
@@ -9,11 +9,11 @@ Last documented state: **Version 11**, 2026-10-12.
 - Production URL: https://yashil-bowl-uz.apt-snipe-2429.chatgpt.site
 - GitHub repository: https://github.com/sevinchbek101/yashil-restaurant
 - GitHub visibility: private
-- Current GitHub production snapshot branch: `version-11`
-- Current GitHub main state: Version 11, identical to `version-11`
-- Current ChatGPT Sites source commit: `713667e6db8675b691b5ad57e603f16d55f72a11`
+- Current GitHub production snapshot branch: `version-12`
+- Current GitHub main state: Version 12, identical to `version-12`
+- Current ChatGPT Sites source commit: `677381028a2a090cb1056d5aa2623f2bc9d63340`
 - ChatGPT Sites project ID: `appgprj_6ac9f15ca4dc819190d3d10f464b1d16`
-- Current Site access: public. Customer routes are open; `/admin` and admin API actions are restricted to the owner account ID.
+- Current Site access: public. Customer routes are open; `/admin` and admin API actions require the dedicated admin credential and signed session cookie.
 
 Important: the GitHub repository and the internal ChatGPT Sites source repository are separate. GitHub is used for backup and numbered version branches. Pushing GitHub does not deploy the live Site.
 
@@ -29,13 +29,13 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 - Tailwind CSS 4 is installed, but the visible custom design is mainly in `app/globals.css`
 - Solar Icons React package 2.3.2, consistently using the `Broken` icon style
 - Images currently load from Unsplash URLs
-- Sign in with ChatGPT headers are used for the protected admin page
+- Sites runtime secrets store admin credentials; Web Crypto HMAC signs a 12-hour HttpOnly/Secure/SameSite=Strict admin session cookie
 
 ## 3. Main routes and user experience
 
 ### `/` — storefront/landing page
 
-- Shared responsive header: logo on the left, centered pill navigation on desktop, language/admin/cart actions on the right, and a hamburger disclosure menu at 1100 px and below.
+- Shared responsive header: logo on the left, centered pill navigation on desktop, language/cart actions on the right, and a hamburger disclosure menu at 1100 px and below. Admin is intentionally absent from public navigation.
 - Hero section with the YASHIL slogan, healthy-food photo, explanatory text, and menu CTA.
 - Displays three sample/popular products loaded from D1.
 - Add-to-cart action uses the Solar `CartPlus` icon.
@@ -69,9 +69,15 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
 - Uses Solar icons for the steps and loading feedback.
 - The total breakdown and invalid legacy date handling were fixed in Version 6.
 
+### `/admin/login` — admin sign-in
+
+- Dedicated username/password form reached by entering `/admin` directly.
+- Credentials are read from Sites runtime variables: `YASHIL_ADMIN_LOGIN`, `YASHIL_ADMIN_PASSWORD`, and `YASHIL_ADMIN_SESSION_SECRET`.
+- Successful login creates a signed 12-hour HttpOnly cookie; failed credentials return 401.
+
 ### `/admin` — protected admin dashboard
 
-- Server-rendered page requiring Sign in with ChatGPT.
+- Server-rendered page requiring a valid YASHIL admin session; otherwise redirects to `/admin/login`.
 - Admin sections:
   - Dashboard: total revenue, number of orders, average order value, customer count, seven-day sales chart, latest orders.
   - Products: create, edit, hide/show, and delete products.
@@ -80,7 +86,7 @@ Important: the GitHub repository and the internal ChatGPT Sites source repositor
   - Promo codes: create, edit, activate/deactivate, and delete percentage discounts.
   - Settings: shop name, phone, payment methods, minimum order; manage delivery zones and fees.
 - Admin interface is currently Uzbek-only.
-- Admin authorization checks the authenticated ChatGPT user ID against the explicit YASHIL owner allowlist in `app/chatgpt-auth.ts`. Non-owner visitors are redirected from `/admin`, and admin API reads/mutations are rejected.
+- Admin authorization verifies the signed `yashil_admin_session` cookie in both the page and admin API. Production credentials and signing secret stay in Sites runtime secrets.
 
 ## 4. Languages
 
@@ -171,7 +177,7 @@ All functionality currently uses `app/api/data/route.ts`.
 ### POST actions
 
 - `create-order` is customer-accessible.
-- Admin-authenticated actions: `save-product`, `delete-product`, `order-status`, `save-promo`, `delete-promo`, `save-zone`, `delete-zone`, `save-settings`.
+- Admin-session-authenticated actions: `save-product`, `delete-product`, `order-status`, `save-promo`, `delete-promo`, `save-zone`, `delete-zone`, `save-settings`.
 - Order creation does not trust browser prices. It rereads product prices and availability from D1 before calculating subtotal, discount, fee, and total.
 
 ## 8. Seed behavior
@@ -184,7 +190,10 @@ The API calls `seed()` before reads and writes:
 
 ## 9. Important source files
 
-- `app/site-header.tsx`: shared desktop/mobile header and owner-facing admin navigation.
+- `app/site-header.tsx`: shared desktop/mobile customer header; it intentionally contains no admin link.
+- `app/admin-auth.ts`: credential comparison, signed-session creation, and verification.
+- `app/admin/login/`: responsive login page and client form.
+- `app/api/admin-auth/route.ts`: login and logout cookie endpoint.
 - `app/storefront.tsx`: home page and home cart.
 - `app/menu/catalog.tsx`: full menu, search, filters, cart, checkout.
 - `app/track/tracker.tsx`: tracking lookup and timeline.
@@ -243,6 +252,7 @@ Always verify:
 - Version 9: fixed horizontal overflow caused by page-level transform animation; kept safe loaders and icons.
 - Version 10: added Antigravity handoff and agent documentation.
 - Version 11: added the shared responsive header and explicit owner-only admin authorization.
+- Version 12: removed public admin links, added dedicated secret-backed admin login/session, pill category states, Manrope typography, and readable line spacing.
 
 ## 12. Git and release convention
 
@@ -256,20 +266,21 @@ Always verify:
 
 ## 13. Highest-priority next work
 
-1. Continue the broader visual-design pass for hero, cards, checkout, tracking, and admin surfaces.
-2. Add product quantities and consolidate duplicate cart rows.
-3. Use shop settings dynamically instead of hardcoded phone/payment/minimum order values.
-4. Add robust network error UI and make loading states exit cleanly after failed requests.
-5. Add multilingual database fields for product name/description or a translation table.
-6. Replace image URL-only admin editing with image upload/storage.
-7. Add order notes, delivery phone, and clearer payment-state handling if required.
-8. Add automated unit/API tests and responsive browser tests.
-9. After the current site is finished, create a separate PHP implementation; no database choice has been made yet.
+1. Replace the temporary shared admin password with a strong unique password before real operation.
+2. Continue the broader visual-design pass for hero, cards, checkout, tracking, and admin surfaces.
+3. Add product quantities and consolidate duplicate cart rows.
+4. Use shop settings dynamically instead of hardcoded phone/payment/minimum order values.
+5. Add robust network error UI and make loading states exit cleanly after failed requests.
+6. Add multilingual database fields for product name/description or a translation table.
+7. Replace image URL-only admin editing with image upload/storage.
+8. Add order notes, delivery phone, and clearer payment-state handling if required.
+9. Add automated unit/API tests and responsive browser tests.
+10. After the current site is finished, create a separate PHP implementation; no database choice has been made yet.
 
 ## 14. Known limitations and cautions
 
 - Payment integrations are not implemented.
-- Admin access uses a single hardcoded owner ID allowlist, not a database-backed role system.
+- Admin access currently uses one temporary shared credential, not multiple users, roles, lockout, or database-backed access control.
 - No inventory counts, modifier options, product quantities, tax logic, refunds, courier accounts, or notifications.
 - Tracking is polling-based, not push/WebSocket-based.
 - Product content is not multilingual.
