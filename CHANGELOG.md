@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 21 — UI/UX audit tuzatishlari
+
+- Menyu uchun loading, tarmoq xatosi, qayta urinish, bo‘sh natija va filtrlarni tozalash holatlari alohida qilindi.
+- Savat va checkout oynalariga `dialog` semantikasi, Escape, fokusni ushlab turish va yopilganda fokusni qaytarish qo‘shildi.
+- Bo‘sh savatdagi ishlamaydigan checkout o‘rniga “Menyuni ko‘rish” amali berildi.
+- Buyurtma kuzatuvi ID yoki telefon bo‘yicha alohida tanlovga o‘tkazildi; telefon maydoni mobil klaviatura va autofill bilan moslashtirildi.
+- Kategoriya, til, qidiruv, natijalar va mobil navigatsiyaning screen reader hamda klaviatura holatlari yaxshilandi.
+- Global skip-link, kuchli fokus holatlari, 44 px touch targetlar va kamaytirilgan animatsiya rejimi mustahkamlandi.
+- 3D tilt/magnetic hodisalari bitta delegatsiyalangan `requestAnimationFrame` tizimiga o‘tkazildi; buyurtma amallaridan magnitli siljish olib tashlandi.
+- Mobil kartalar 4:3 ixcham rasm nisbatiga o‘tkazildi, glass blur kamaytirildi va matnlar qator bo‘yicha cheklandi.
+- Tashqi Unsplash rasmlari optimallashtirilgan mahalliy WebP fayllarga almashtirildi; LCP rasmiga ustuvor yuklash berildi.
+- Haqiqiy xizmat imkoniyatlari uchun ishonch paneli, telefon uchun `tel:` havola va desktop checkout uchun sticky xulosa qo‘shildi.
+- Tasdiqlanmagan halal, reyting yoki oziqlanish ma’lumotlari ataylab qo‘shilmadi.
+- Production build muvaffaqiyatli tekshirildi.
+
 ## Version 20 — Bosh sahifa kartalari va mobil kategoriya ikonkalari
 
 - Bosh sahifadagi mahsulot kartalari telefonda menyudagidek ikki ustunli ixcham o‘lchamga o‘tkazildi.

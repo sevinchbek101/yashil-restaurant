@@ -26,7 +26,7 @@ export default function AdminLoginForm() {
     window.location.assign("/admin");
   }
 
-  return <main className="adminLoginPage">
+  return <main className="adminLoginPage" id="main-content">
     <a className="adminLoginBrand" href="/" aria-label="YASHIL bosh sahifasi">yashil</a>
     <section className="adminLoginCard">
       <div className="adminLoginIcon"><LockKeyholeIcon size={30}/></div>

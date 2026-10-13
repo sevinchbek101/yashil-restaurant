@@ -12,36 +12,43 @@ const copy={
 };
 const keys=["new","preparing","delivery","done"],stepIcons=[CheckCircleIcon,ChefHatIcon,DeliveryIcon,CheckCircleIcon];
 const money=(n:number,lang:Lang)=>Number(n).toLocaleString(lang==="uz"?"uz-UZ":lang==="ru"?"ru-RU":"en-US")+" so‘m";
+const modeCopy={
+ uz:{id:"Buyurtma ID",phone:"Telefon",retry:"Qayta urinish",network:"Tarmoq xatosi. Internetni tekshirib, qayta urinib ko‘ring."},
+ ru:{id:"ID заказа",phone:"Телефон",retry:"Повторить",network:"Ошибка сети. Проверьте подключение и повторите попытку."},
+ en:{id:"Order ID",phone:"Phone",retry:"Try again",network:"Network error. Check your connection and try again."},
+};
 
 export default function Tracker(){
  const {lang,setLang}=useLanguage(),t=copy[lang];
- const [id,setId]=useState(""),[phone,setPhone]=useState(""),[orders,setOrders]=useState<any[]>([]),[error,setError]=useState(""),[loading,setLoading]=useState(false),[updated,setUpdated]=useState<Date|null>(null),[autoLookup,setAutoLookup]=useState(false);
+ const m=modeCopy[lang];
+ const [mode,setMode]=useState<"id"|"phone">("id"),[id,setId]=useState(""),[phone,setPhone]=useState(""),[orders,setOrders]=useState<any[]>([]),[error,setError]=useState(""),[loading,setLoading]=useState(false),[updated,setUpdated]=useState<Date|null>(null),[autoLookup,setAutoLookup]=useState(false);
  useEffect(()=>{try{const saved=JSON.parse(localStorage.getItem("yashil:lastOrder")||"null");if(saved){setId(String(saved.id));setPhone(saved.phone);setAutoLookup(new URLSearchParams(location.search).get("payment")==="returned")}}catch{}},[]);
  const search=useCallback(async(silent=false)=>{
-  if(!id&&!phone){if(!silent)setError(copy[lang].required);return}
+  const value=mode==="id"?id:phone;
+  if(!value){if(!silent)setError(copy[lang].required);return}
   if(!silent)setLoading(true);
-  const params=new URLSearchParams({track:"1"});
-  if(id)params.set("order",id);
-  if(phone)params.set("phone",phone);
-  const response=await fetch(`/api/data?${params}`,{cache:"no-store"});
-  const data=await response.json();
-  setLoading(false);
-  if(response.ok){setOrders(data.orders||[data.order]);setError("");setUpdated(new Date())}
-  else if(!silent){setOrders([]);setError(data.error||copy[lang].notFound)}
- },[id,phone,lang]);
+  try{
+   const params=new URLSearchParams({track:"1"});
+   if(mode==="id")params.set("order",id);else params.set("phone",phone);
+   const response=await fetch(`/api/data?${params}`,{cache:"no-store"});
+   const data=await response.json();
+   if(response.ok){setOrders((data.orders||[data.order]).filter(Boolean));setError("");setUpdated(new Date())}
+   else if(!silent){setOrders([]);setError(data.error||copy[lang].notFound)}
+  }catch{if(!silent){setOrders([]);setError(modeCopy[lang].network)}}finally{if(!silent)setLoading(false)}
+ },[id,phone,lang,mode]);
  useEffect(()=>{if(autoLookup&&id){setAutoLookup(false);search()}},[autoLookup,id,search]);
  useEffect(()=>{if(!orders.some(order=>order.status!=="done"&&order.status!=="cancelled"))return;const timer=setInterval(()=>search(true),10000);return()=>clearInterval(timer)},[orders,search]);
  const locale=lang==="uz"?"uz-UZ":lang==="ru"?"ru-RU":"en-US";
- return <main className="trackPage">
+ return <main className="trackPage" id="main-content">
   <SiteHeader lang={lang} setLang={setLang} active="track"/>
   <section className="trackHero shell"><span className="eyebrow">{t.eye}</span><h1>{t.title}</h1><p>{t.intro}</p></section>
   <section className="trackBody shell">
    <form className="trackForm" onSubmit={event=>{event.preventDefault();search()}}>
-    <label>{t.number}<small>{t.numberHint}</small><div className="orderInput"><span>#</span><input value={id} onChange={event=>setId(event.target.value.replace(/\D/g,""))} inputMode="numeric" placeholder={t.example}/></div></label>
-    <label>{t.phone}<small>{t.phoneHint}</small><input value={phone} onChange={event=>setPhone(event.target.value)} placeholder="+998 90 123 45 67"/></label>
+    <div className="trackMode" role="group" aria-label={lang==="uz"?"Qidiruv turi":lang==="ru"?"Тип поиска":"Search type"}><button type="button" aria-pressed={mode==="id"} className={mode==="id"?"active":""} onClick={()=>{setMode("id");setError("")}}>{m.id}</button><button type="button" aria-pressed={mode==="phone"} className={mode==="phone"?"active":""} onClick={()=>{setMode("phone");setError("")}}>{m.phone}</button></div>
+    {mode==="id"?<label htmlFor="track-id">{t.number}<small>{t.numberHint}</small><div className="orderInput"><span>#</span><input id="track-id" value={id} onChange={event=>setId(event.target.value.replace(/\D/g,""))} inputMode="numeric" autoComplete="off" placeholder={t.example}/></div></label>:<label htmlFor="track-phone">{t.phone}<small>{t.phoneHint}</small><input id="track-phone" type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={event=>setPhone(event.target.value)} placeholder="+998 90 123 45 67"/></label>}
     <button className="pill submitBtn" disabled={loading}>{loading&&<RefreshIcon className="spinIcon" size={19}/>}<span>{loading?t.checking:t.check}</span></button>
    </form>
-   {error&&<div className="trackError">{error}</div>}
+   {error&&<div className="trackError" role="alert"><span>{error}</span><button type="button" onClick={()=>search()}>{m.retry}</button></div>}
    {orders.length>1&&<p className="trackingFound"><b>{orders.length}</b> {t.found}</p>}
    <div className="trackingResults">{orders.map(order=>{
     const current=keys.indexOf(order.status);

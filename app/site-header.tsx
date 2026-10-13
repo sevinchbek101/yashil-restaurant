@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { Lang, LanguageSwitch } from "./language";
 import {
   CartLargeMinimalisticIcon,
@@ -22,12 +22,14 @@ export default function SiteHeader({
   active,
   cartCount,
   onCart,
+  cartButtonRef,
 }: {
   lang: Lang;
   setLang: (lang: Lang) => void;
   active: ActivePage;
   cartCount?: number;
   onCart?: () => void;
+  cartButtonRef?: RefObject<HTMLButtonElement | null>;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [savedCount, setSavedCount] = useState(0);
@@ -63,7 +65,7 @@ export default function SiteHeader({
         <small>healthy kitchen</small>
       </a>
 
-      <nav className="siteNav" aria-label="Asosiy navigatsiya">
+      <nav className="siteNav" aria-label={lang === "uz" ? "Asosiy navigatsiya" : lang === "ru" ? "Основная навигация" : "Main navigation"}>
         {links.map(link => <a
           key={link.id}
           href={link.href}
@@ -75,7 +77,7 @@ export default function SiteHeader({
       <div className="headerActions">
         <div className="desktopLanguage"><LanguageSwitch lang={lang} setLang={setLang}/></div>
         {onCart
-          ? <button className="headerCart" onClick={onCart}>{cartContent}</button>
+          ? <button ref={cartButtonRef} type="button" className="headerCart" onClick={onCart}>{cartContent}</button>
           : <a className="headerCart" href="/menu">{cartContent}</a>}
         <button
           className="mobileMenuToggle"
@@ -87,8 +89,8 @@ export default function SiteHeader({
       </div>
     </div>
 
-    <div id="mobile-navigation" className={`mobileNavPanel ${mobileOpen ? "open" : ""}`}>
-      <nav className="shell" aria-label="Mobil navigatsiya">
+    <div id="mobile-navigation" className={`mobileNavPanel ${mobileOpen ? "open" : ""}`} hidden={!mobileOpen} aria-hidden={!mobileOpen}>
+      <nav className="shell" aria-label={lang === "uz" ? "Mobil navigatsiya" : lang === "ru" ? "Мобильная навигация" : "Mobile navigation"}>
         {links.map(link => <a
           key={link.id}
           href={link.href}

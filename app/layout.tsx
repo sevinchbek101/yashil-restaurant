@@ -12,6 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="uz">
       <body>
+        <a className="skipLink" href="#main-content">Asosiy mazmunga o‘tish</a>
         <PremiumMotion />
         <SplashScreen />
         {children}
