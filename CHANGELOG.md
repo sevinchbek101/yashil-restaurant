@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 17 — Professional UI/UX polish
+
+- Google Fonts’dan `Manrope` va `Fraunces` to‘liq ulandi; matn, sarlavha, qator oralig‘i va shrift qalinliklari yagona tipografik tizimga keltirildi.
+- Bosh sahifa, menyu, kuzatuv, checkout va admin panel kartalariga zamonaviy bo‘shliqlar, nozik chegaralar hamda yumshoq soyalar qo‘shildi.
+- Tugma, navigatsiya, taom kartasi, forma va boshqaruv elementlariga silliq hover, focus va active holatlari berildi.
+- Sahifa ochilishida yengil kirish animatsiyalari qo‘shildi; `prefers-reduced-motion` sozlamasi saqlandi.
+- Mobil va desktop oraliqlari, kartalar radiusi va vizual ierarxiya qayta muvozanatlandi.
+- Asosiy sayt strukturasi, buyurtma oqimi, to‘lov, kuzatuv va admin funksiyalari o‘zgartirilmadi.
+
 ## Version 16 — Splash screen animatsiya va yangi shriftlar
 
 - Sayt ochilganda to’liq ekranli splash screen qo’shildi: yashil fonda aylonuvchi loader va "Yuklanmoqda…" yozuvi, keyin "Tayyor" matni pastga tushib keladi; minimum 1.2 soniya ko’rsatiladi.
@@ -136,3 +145,4 @@
 ## Version 1 — Birinchi ko‘rinish
 
 - YASHIL restorani uchun landing sahifa, savat va buyurtma formasi yaratildi.
+

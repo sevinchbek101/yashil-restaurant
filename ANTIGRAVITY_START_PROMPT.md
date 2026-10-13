@@ -16,11 +16,12 @@ For every completed update:
 
 Important: GitHub push does not deploy the ChatGPT Sites production URL. Prepare and commit the code, then tell me that a separate Sites deployment is required.
 
-## Current state (Version 16)
+## Current state (Version 17)
 
 - Splash screen added: full-screen green overlay with spinning loader and "Yuklanmoqda…" label, transitions to "Tayyor" drop-in text, minimum 1.2 s display even on fast loads. Component: `components/SplashScreen.tsx`.
 - Fonts updated: `DM Sans` for body text, `Fraunces` serif for headings (h1, h2). Both loaded from Google Fonts in `globals.css`.
 - `prefers-reduced-motion` respected for all splash animations.
 
 My next task will be provided after you finish reading the project context.
+
 
