@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 22 — Bosh sahifa soddalashtirildi
+
+- Bosh sahifadagi yangi uch qatorli afzalliklar bloki olib tashlandi.
+- Mobil yuqori menyudagi savat doirasi va bosish maydoni biroz kattalashtirildi.
+- Savatdagi mahsulotlar soni belgisi yangi o‘lchamga mos joylashtirildi.
+
 ## Version 21 — UI/UX audit tuzatishlari
 
 - Menyu uchun loading, tarmoq xatosi, qayta urinish, bo‘sh natija va filtrlarni tozalash holatlari alohida qilindi.
