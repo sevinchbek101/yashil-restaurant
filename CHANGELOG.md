@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 23 — Mobil savat indikatori
+
+- Mobil ekrandagi savat doirasi 60 px gacha kattalashtirildi.
+- Mahsulotlar soni doiraning yuqori o‘ng burchagiga joylashtirilib, kesilib qolishi tuzatildi.
+- Kattaroq savat uchun mobil header balandligi moslashtirildi.
+
 ## Version 22 — Bosh sahifa soddalashtirildi
 
 - Bosh sahifadagi yangi uch qatorli afzalliklar bloki olib tashlandi.
