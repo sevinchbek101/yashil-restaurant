@@ -313,3 +313,27 @@ body>main,.admin,.adminLoginPage,.trackPage,.menuPage{position:relative;z-index:
 @media(hover:none),(pointer:coarse){.tilt3d{transform:none!important}.tilt3d>*{transform:none!important}.magneticFx{transform:none}}
 @media(prefers-reduced-motion:reduce){.premiumAmbient{display:none}.hero h1,.menuHero h1,.trackHero h1,.sectionTop h2,.feature h2,.dark h2{animation:none;background-position:50%}.motionReveal{opacity:1!important;filter:none!important;transform:none!important}}
 
+/* Version 19 — compact mobile product cards */
+@media(max-width:760px){
+  .menuCatalog{padding-bottom:76px}
+  .menuCatalog .menuGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px;align-items:stretch}
+  .menuCatalog .food{height:100%;padding:7px 7px 12px;border-radius:18px}
+  .menuCatalog .foodImg{aspect-ratio:1/1;border-radius:14px}
+  .menuCatalog .foodImg span{left:8px;top:8px;max-width:calc(100% - 16px);padding:5px 8px;font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .menuCatalog .food h3{margin:12px 5px 5px;font-size:17px;line-height:1.18;letter-spacing:-.03em}
+  .menuCatalog .food p{display:-webkit-box;min-height:35px;margin:0 5px;overflow:hidden;font-size:11px;line-height:1.48;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+  .menuCatalog .food>div:last-child{gap:5px;margin:11px 5px 0;padding-top:10px}
+  .menuCatalog .food>div:last-child>b{font-size:10px;line-height:1.25}
+  .menuCatalog .food .iconBtn{width:34px;min-width:34px;height:34px;min-height:34px;padding:0}
+  .menuCatalog .food .iconBtn svg{width:18px;height:18px}
+  .menuCatalog .cartAddLabel{display:none}
+  .menuCatalog .foodSkeleton{gap:8px}
+  .menuCatalog .foodSkeleton i{aspect-ratio:1/1;border-radius:14px}
+  .menuCatalog .foodSkeleton b{height:18px}.menuCatalog .foodSkeleton span{height:10px}
+}
+@media(max-width:360px){
+  .menuCatalog .menuGrid{gap:12px 8px}
+  .menuCatalog .food h3{font-size:16px}
+  .menuCatalog .food>div:last-child>b{font-size:9px}
+}
+

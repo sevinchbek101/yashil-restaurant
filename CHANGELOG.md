@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 19 — Mobil mahsulot kartalari ixchamlashtirildi
+
+- Telefon menyusidagi mahsulotlar ikki ustunli ixcham gridga o‘tkazildi.
+- Mobil kartalarda rasm, sarlavha, tavsif, narx va savat tugmasi o‘lchamlari kamaytirildi.
+- Tavsif ikki qator bilan cheklanib, savat tugmasida mobil ekranda faqat tushunarli ikonka qoldirildi.
+- Desktop dizayni va Version 18 3D effektlari o‘zgartirilmadi.
+
 ## Version 18 — Premium 3D motion va neon glass
 
 - Kartalar uchun mouse koordinatalariga asoslangan haqiqiy 3D tilt, perspective va ichki elementlarning depth effekti qo‘shildi.
