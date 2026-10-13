@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SplashScreen from "@/components/SplashScreen";
+import PremiumMotion from "@/components/PremiumMotion";
 
 export const metadata: Metadata = {
   title: "YASHIL — Sog’lom taomlar",
@@ -11,9 +12,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="uz">
       <body>
+        <PremiumMotion />
         <SplashScreen />
         {children}
       </body>
     </html>
   );
 }
+

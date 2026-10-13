@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 18 — Premium 3D motion va neon glass
+
+- Kartalar uchun mouse koordinatalariga asoslangan haqiqiy 3D tilt, perspective va ichki elementlarning depth effekti qo‘shildi.
+- Sahifa foniga turli tezlikda scroll qiluvchi, havoda suzuvchi orb, ring, prism va neon glow shakllari qo‘shildi.
+- IntersectionObserver orqali blur, rotateX, translateZ va scale asosidagi scroll reveal tizimi yaratildi.
+- Kartalar, header, modal va menyular ko‘p qatlamli soya, shisha blur hamda yaltiraydigan border bilan yangilandi.
+- Tugmalarga magnitli tortilish, 3D bosilish va bosilgan nuqtadan tarqaladigan ripple glow effekti qo‘shildi.
+- Asosiy sarlavhalarga harakatlanuvchi gradient rang animatsiyasi berildi.
+- Touch qurilmalar va prefers-reduced-motion uchun xavfsiz, yengillashtirilgan fallback saqlandi.
+
 ## Version 17 — Professional UI/UX polish
 
 - Google Fonts’dan `Manrope` va `Fraunces` to‘liq ulandi; matn, sarlavha, qator oralig‘i va shrift qalinliklari yagona tipografik tizimga keltirildi.
