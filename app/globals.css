@@ -316,24 +316,40 @@ body>main,.admin,.adminLoginPage,.trackPage,.menuPage{position:relative;z-index:
 /* Version 19 — compact mobile product cards */
 @media(max-width:760px){
   .menuCatalog{padding-bottom:76px}
-  .menuCatalog .menuGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px;align-items:stretch}
-  .menuCatalog .food{height:100%;padding:7px 7px 12px;border-radius:18px}
-  .menuCatalog .foodImg{aspect-ratio:1/1;border-radius:14px}
-  .menuCatalog .foodImg span{left:8px;top:8px;max-width:calc(100% - 16px);padding:5px 8px;font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .menuCatalog .food h3{margin:12px 5px 5px;font-size:17px;line-height:1.18;letter-spacing:-.03em}
-  .menuCatalog .food p{display:-webkit-box;min-height:35px;margin:0 5px;overflow:hidden;font-size:11px;line-height:1.48;-webkit-box-orient:vertical;-webkit-line-clamp:2}
-  .menuCatalog .food>div:last-child{gap:5px;margin:11px 5px 0;padding-top:10px}
-  .menuCatalog .food>div:last-child>b{font-size:10px;line-height:1.25}
-  .menuCatalog .food .iconBtn{width:34px;min-width:34px;height:34px;min-height:34px;padding:0}
-  .menuCatalog .food .iconBtn svg{width:18px;height:18px}
-  .menuCatalog .cartAddLabel{display:none}
-  .menuCatalog .foodSkeleton{gap:8px}
-  .menuCatalog .foodSkeleton i{aspect-ratio:1/1;border-radius:14px}
-  .menuCatalog .foodSkeleton b{height:18px}.menuCatalog .foodSkeleton span{height:10px}
+  :is(.menuCatalog,.section) .menuGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px;align-items:stretch}
+  :is(.menuCatalog,.section) .food{height:100%;padding:7px 7px 12px;border-radius:18px}
+  :is(.menuCatalog,.section) .foodImg{aspect-ratio:1/1;border-radius:14px}
+  :is(.menuCatalog,.section) .foodImg span{left:8px;top:8px;max-width:calc(100% - 16px);padding:5px 8px;font-size:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  :is(.menuCatalog,.section) .food h3{margin:12px 5px 5px;font-size:17px;line-height:1.18;letter-spacing:-.03em}
+  :is(.menuCatalog,.section) .food p{display:-webkit-box;min-height:35px;margin:0 5px;overflow:hidden;font-size:11px;line-height:1.48;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+  :is(.menuCatalog,.section) .food>div:last-child{gap:5px;margin:11px 5px 0;padding-top:10px}
+  :is(.menuCatalog,.section) .food>div:last-child>b{font-size:10px;line-height:1.25}
+  :is(.menuCatalog,.section) .food .iconBtn{width:34px;min-width:34px;height:34px;min-height:34px;padding:0}
+  :is(.menuCatalog,.section) .food .iconBtn svg{width:18px;height:18px}
+  :is(.menuCatalog,.section) .cartAddLabel{display:none}
+  :is(.menuCatalog,.section) .foodSkeleton{gap:8px}
+  :is(.menuCatalog,.section) .foodSkeleton i{aspect-ratio:1/1;border-radius:14px}
+  :is(.menuCatalog,.section) .foodSkeleton b{height:18px}
+  :is(.menuCatalog,.section) .foodSkeleton span{height:10px}
+  .section .menuGrid>:last-child:nth-child(odd){grid-column:1/-1;width:calc(50% - 5px);justify-self:center}
 }
 @media(max-width:360px){
-  .menuCatalog .menuGrid{gap:12px 8px}
-  .menuCatalog .food h3{font-size:16px}
-  .menuCatalog .food>div:last-child>b{font-size:9px}
+  :is(.menuCatalog,.section) .menuGrid{gap:12px 8px}
+  :is(.menuCatalog,.section) .food h3{font-size:16px}
+  :is(.menuCatalog,.section) .food>div:last-child>b{font-size:9px}
+}
+
+/* Version 20 — mobile category icon controls */
+.categoryTabs button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.categoryTabs button svg{flex:0 0 auto}
+@media(max-width:760px){
+  .menuTools{gap:15px;padding:14px}
+  .menuTools .categoryTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;overflow:visible;padding:0}
+  .menuTools .categoryTabs button{width:100%;min-width:0;height:62px;flex-direction:column;gap:3px;padding:7px 3px;border:1px solid rgba(0,71,60,.12);border-radius:15px;font-size:9px;font-weight:750;letter-spacing:-.01em;overflow:hidden}
+  .menuTools .categoryTabs button svg{width:21px;height:21px}
+  .menuTools .categoryTabs button span{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .menuTools .categoryTabs button.active{border-color:var(--forest)}
+  .menuSearch{height:50px;padding:0 14px}
+  .menuSearch input{font-size:13px}
 }
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 20 — Bosh sahifa kartalari va mobil kategoriya ikonkalari
+
+- Bosh sahifadagi mahsulot kartalari telefonda menyudagidek ikki ustunli ixcham o‘lchamga o‘tkazildi.
+- Mobil kategoriya paneli gorizontal kesilmaydigan to‘rtta teng tugmaga almashtirildi.
+- Kategoriyalarga Solar Broken uslubida umumiy menyu, bowl, salat va ichimlik ikonkalari qo‘shildi.
+- Ma’no tushunarli qolishi uchun ikonka ostida qisqa kategoriya nomi saqlandi.
+- Desktop kategoriya va mahsulot ko‘rinishi o‘zgartirilmadi.
+
 ## Version 19 — Mobil mahsulot kartalari ixchamlashtirildi
 
 - Telefon menyusidagi mahsulotlar ikki ustunli ixcham gridga o‘tkazildi.

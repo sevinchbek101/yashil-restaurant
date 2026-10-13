@@ -32,3 +32,6 @@ export { ClockCircleIcon } from "@solar-icons/react/broken/clock-circle";
 export { LockKeyholeIcon } from "@solar-icons/react/broken/lock-keyhole";
 export { LoginIcon } from "@solar-icons/react/broken/login";
 export { UserIcon } from "@solar-icons/react/broken/user";
+export { Widget3Icon } from "@solar-icons/react/broken/widget-3";
+export { PlateIcon } from "@solar-icons/react/broken/plate";
+export { CupHotIcon } from "@solar-icons/react/broken/cup-hot";
