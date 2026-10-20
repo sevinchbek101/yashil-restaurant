@@ -1,33 +1,64 @@
-# YASHIL — sog‘lom taomlar restorani
+# YASHIL BOWL — Node.js Restaurant Platform
 
-YASHIL uchun to‘liq ishlaydigan ko‘p tilli buyurtma sayti: menyu qidiruvi, savat va checkout, buyurtmani kuzatish hamda himoyalangan admin panel.
+Toshkentdagi zamonaviy healthy-food restorani uchun ishlab chiqilgan to‘liq ishlaydigan buyurtma platformasi. Loyiha MCWeb kabi oddiy Node.js hostinglarda ishlashi uchun Cloudflare D1’dan mahalliy SQLite bazasiga moslashtirilgan.
 
-## Joriy holat
+## Imkoniyatlar
 
-- Sayt kodi: **Version 20**
-- Hujjatlar: **Version 20**
-- Logo chapda, menyu markazda joylashgan responsive yuqori navigatsiya
-- Mobil qurilmalar uchun hamburger menyu
-- Nuqtasiz, yumaloq pill ko‘rinishidagi kategoriya tanlash
+- 20 ta tayyor bowl, salat va ichimlik
 - O‘zbek, rus va ingliz tillari
-- Solar Icons `Broken` uslubidagi yagona ikonka tizimi
-- Manrope + Fraunces asosidagi professional tipografika, yumshoq soyalar va accessibility’ga mos animatsiyalar
-- Mouse-driven 3D tilt, floating parallax, scroll reveal, glassmorphism, magnetic tugmalar va animated gradient sarlavhalar
-- Telefon menyusida mahsulotlar uchun ixcham ikki ustunli responsive kartalar
-- Mobil kategoriyalar uchun ikonka va qisqa nomli to‘rtta teng boshqaruv tugmasi
-- Menyu qidiruvi, kategoriya filtrlari, savat va sodda to‘lov tanlovi: olganda to‘lash yoki rasmiy Click, Payme, Uzcard, Humo, Plum, Paylov, Xazna va Oson logotip kartochkalari
-- `/track` orqali buyurtma va to‘lov holatini ID yoki telefonning bittasi bilan kuzatish; telefon qidiruvi barcha buyurtmalarni ko‘rsatadi
-- `/admin` orqali login/parol bilan himoyalangan boshqaruv paneli; CHECKOUT.UZ API kaliti shu panelda kiritiladi, shifrlanadi va brauzerga qaytarilmaydi
-- Cloudflare D1 ma’lumotlar bazasi
+- Responsive bosh sahifa va qidiruvli menyu
+- Savat, promo-kod va yetkazib berish hududlari
+- Naqd yoki CHECKOUT.UZ orqali onlayn to‘lov
+- Buyurtmani ID yoki telefon orqali kuzatish
+- `/admin` orqali himoyalangan boshqaruv paneli
+- Taomlar, buyurtmalar, mijozlar, promo-kodlar va sozlamalar boshqaruvi
+- Mahalliy SQLite baza — alohida MySQL server talab qilmaydi
 
-## Antigravity bilan davom ettirish
+## Mahalliy ishga tushirish
 
-1. Repozitoriyni clone qiling.
-2. Avval `AGENTS.md` va `PROJECT_HANDOFF.md` fayllarini o‘qing.
-3. `ANTIGRAVITY_START_PROMPT.md` ichidagi tayyor promptni Antigravity’ga yuboring.
-4. Ishni GitHub `main` branchidan boshlang; eski `version-N` branchlarini o‘zgartirmang.
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
-Muhim: GitHub’ga push qilish jonli ChatGPT Sites saytini avtomatik yangilamaydi. Production deployment alohida Sites jarayonidan o‘tadi.
+Brauzerda `http://localhost:3000` ni oching.
 
-Sayt: https://yashil-bowl-uz.apt-snipe-2429.chatgpt.site
+## MCWeb sozlamalari
 
+- Application type: `Web Service`
+- Runtime: `Node.js 22`
+- Repository branch: `main`
+- Build command: `npm ci && npm run build`
+- Start command: `npm start`
+- Port: MCWeb bergan `PORT` environment variable orqali avtomatik olinadi
+
+Environment variables:
+
+```env
+DB_PATH=storage/yashil.sqlite
+YASHIL_ADMIN_LOGIN=admin
+YASHIL_ADMIN_PASSWORD=
+YASHIL_ADMIN_SESSION_SECRET=
+YASHIL_SETTINGS_ENCRYPTION_SECRET=
+YASHIL_CHECKOUT_WEBHOOK_SECRET=
+```
+
+Haqiqiy qiymatlarni GitHub’ga yozmang. Ularni faqat MCWeb loyiha sozlamalaridagi environment variables bo‘limiga kiriting.
+
+## Muhim papkalar
+
+```text
+app/                Next.js sahifalar va API
+db/local.ts         SQLite adapter va avtomatik schema
+public/             logo, rasmlar va to‘lov tizimi logotiplari
+storage/            runtime SQLite bazasi (Git’ga yuklanmaydi)
+```
+
+## Brend
+
+Nomi: **YASHIL BOWL**
+
+Yo‘nalish: fresh bowls, salatlar va tabiiy ichimliklar
+
+Demo aloqa: `+998 71 200 77 77`

@@ -60,9 +60,9 @@ export default function SiteHeader({
 
   return <header className="siteHeader">
     <div className="siteHeaderInner shell">
-      <a className="siteBrand" href="/" aria-label="YASHIL bosh sahifa">
-        <strong>yashil</strong>
-        <small>healthy kitchen</small>
+      <a className="siteBrand" href="/" aria-label="YASHIL BOWL bosh sahifa">
+        <img src="/logo-mark.svg" alt="" width="48" height="48"/>
+        <span><strong>YASHIL BOWL</strong><small>fresh kitchen · tashkent</small></span>
       </a>
 
       <nav className="siteNav" aria-label={lang === "uz" ? "Asosiy navigatsiya" : lang === "ru" ? "Основная навигация" : "Main navigation"}>

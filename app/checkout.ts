@@ -1,4 +1,4 @@
-import { env } from "cloudflare:workers";
+import type { AppDatabase } from "../db/local";
 
 const CHECKOUT_API = "https://checkout.uz/api/v1";
 const API_KEY_SETTING = "checkout_api_key_encrypted";
@@ -9,10 +9,11 @@ type RuntimeSecrets = {
   YASHIL_CHECKOUT_WEBHOOK_SECRET?: string;
 };
 
-type Database = typeof env.DB;
-
 function secrets(): RuntimeSecrets {
-  return env as unknown as RuntimeSecrets;
+  return {
+    YASHIL_SETTINGS_ENCRYPTION_SECRET: process.env.YASHIL_SETTINGS_ENCRYPTION_SECRET,
+    YASHIL_CHECKOUT_WEBHOOK_SECRET: process.env.YASHIL_CHECKOUT_WEBHOOK_SECRET,
+  };
 }
 
 function base64Url(bytes: Uint8Array): string {
@@ -26,6 +27,10 @@ function fromBase64Url(value: string): Uint8Array {
   const padded = normalized + "=".repeat((4 - normalized.length % 4) % 4);
   const binary = atob(padded);
   return Uint8Array.from(binary, (character) => character.charCodeAt(0));
+}
+
+function bufferSource(value: Uint8Array): ArrayBuffer {
+  return value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength) as ArrayBuffer;
 }
 
 async function encryptionKey(): Promise<CryptoKey> {
@@ -44,11 +49,11 @@ async function encrypt(value: string): Promise<string> {
 async function decrypt(value: string): Promise<string> {
   const [version, encodedIv, encodedData] = value.split(".");
   if (version !== "v1" || !encodedIv || !encodedData) throw new Error("Unsupported encrypted value");
-  const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv: fromBase64Url(encodedIv) }, await encryptionKey(), fromBase64Url(encodedData));
+  const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv: bufferSource(fromBase64Url(encodedIv)) }, await encryptionKey(), bufferSource(fromBase64Url(encodedData)));
   return new TextDecoder().decode(decrypted);
 }
 
-export async function getCheckoutApiKey(db: Database): Promise<string | null> {
+export async function getCheckoutApiKey(db: AppDatabase): Promise<string | null> {
   const row = await db.prepare("SELECT value FROM settings WHERE key=?").bind(API_KEY_SETTING).first<{ value: string }>();
   if (!row?.value) return null;
   try {
@@ -58,17 +63,17 @@ export async function getCheckoutApiKey(db: Database): Promise<string | null> {
   }
 }
 
-export async function checkoutIsConfigured(db: Database): Promise<boolean> {
+export async function checkoutIsConfigured(db: AppDatabase): Promise<boolean> {
   const row = await db.prepare("SELECT 1 configured FROM settings WHERE key=?").bind(API_KEY_SETTING).first();
   return !!row;
 }
 
-export async function saveCheckoutApiKey(db: Database, apiKey: string): Promise<void> {
+export async function saveCheckoutApiKey(db: AppDatabase, apiKey: string): Promise<void> {
   const encrypted = await encrypt(apiKey.trim());
   await db.prepare("INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").bind(API_KEY_SETTING, encrypted).run();
 }
 
-export async function removeCheckoutApiKey(db: Database): Promise<void> {
+export async function removeCheckoutApiKey(db: AppDatabase): Promise<void> {
   await db.prepare("DELETE FROM settings WHERE key=?").bind(API_KEY_SETTING).run();
 }
 

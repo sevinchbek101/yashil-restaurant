@@ -27,7 +27,7 @@ export default function AdminLoginForm() {
   }
 
   return <main className="adminLoginPage" id="main-content">
-    <a className="adminLoginBrand" href="/" aria-label="YASHIL bosh sahifasi">yashil</a>
+    <a className="adminLoginBrand" href="/" aria-label="YASHIL BOWL bosh sahifasi">YASHIL BOWL</a>
     <section className="adminLoginCard">
       <div className="adminLoginIcon"><LockKeyholeIcon size={30}/></div>
       <span className="eyebrow">HIMOYALANGAN BO‘LIM</span>

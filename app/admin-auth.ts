@@ -1,5 +1,3 @@
-import { env } from "cloudflare:workers";
-
 export const ADMIN_SESSION_COOKIE = "yashil_admin_session";
 export const ADMIN_SESSION_SECONDS = 60 * 60 * 12;
 
@@ -11,18 +9,9 @@ type AdminRuntimeEnv = {
 
 const encoder = new TextEncoder();
 
-function runtimeEnv(): AdminRuntimeEnv {
-  return env as unknown as AdminRuntimeEnv;
-}
-
 function configValue(key: keyof AdminRuntimeEnv): string | undefined {
-  const value = runtimeEnv()[key];
+  const value = process.env[key];
   if (value) return value;
-  if (process.env.NODE_ENV === "development") {
-    if (key === "YASHIL_ADMIN_LOGIN") return "admin";
-    if (key === "YASHIL_ADMIN_PASSWORD") return "Admin123";
-    if (key === "YASHIL_ADMIN_SESSION_SECRET") return "local-development-secret-change-me";
-  }
   return undefined;
 }
 
@@ -64,6 +53,10 @@ function fromBase64Url(value: string): Uint8Array {
   return Uint8Array.from(binary, (character) => character.charCodeAt(0));
 }
 
+function bufferSource(value: Uint8Array): ArrayBuffer {
+  return value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength) as ArrayBuffer;
+}
+
 async function sessionKey(): Promise<CryptoKey | null> {
   const secret = configValue("YASHIL_ADMIN_SESSION_SECRET");
   if (!secret) return null;
@@ -87,7 +80,7 @@ export async function verifyAdminSession(token: string | null | undefined): Prom
   try {
     const key = await sessionKey();
     if (!key) return false;
-    const validSignature = await crypto.subtle.verify("HMAC", key, fromBase64Url(encodedSignature), encoder.encode(payload));
+    const validSignature = await crypto.subtle.verify("HMAC", key, bufferSource(fromBase64Url(encodedSignature)), encoder.encode(payload));
     if (!validSignature) return false;
     const decoded = new TextDecoder().decode(fromBase64Url(payload));
     const [role, expiresAt] = decoded.split(":");

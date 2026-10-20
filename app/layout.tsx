@@ -4,7 +4,7 @@ import SplashScreen from "@/components/SplashScreen";
 import PremiumMotion from "@/components/PremiumMotion";
 
 export const metadata: Metadata = {
-  title: "YASHIL — Sog’lom taomlar",
+  title: "YASHIL BOWL — Sog‘lom taomlar",
   description: "Yangi va foydali bowl hamda salatlar.",
 };
 

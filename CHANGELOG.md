@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 24 — YASHIL BOWL va MCWeb Node.js relizi
+
+- Demo loyiha YASHIL BOWL nomli to‘liq restoran ko‘rinishiga keltirildi.
+- Yangi bowl va barg asosidagi SVG logo, favicon va yagona brend yozuvi qo‘shildi.
+- Menyu 20 ta bowl, salat va ichimlik bilan to‘ldirildi; narx, tarkib va belgilar yangilandi.
+- Toshkent bo‘yicha beshta yetkazib berish hududi va realistik yetkazish vaqtlari qo‘shildi.
+- Cloudflare D1 o‘rniga MCWeb’da alohida baza serverisiz ishlaydigan mahalliy SQLite saqlash tizimi qo‘shildi.
+- Loyiha standart Next.js va Node.js 22 build/start jarayoniga o‘tkazildi.
+- Admin paroli va barcha xavfsizlik kalitlari koddan olib tashlanib, environment variables orqali sozlanadigan qilindi.
+- MCWeb o‘rnatish komandalarini va kerakli sozlamalarni tushuntiruvchi README yangilandi.
+
 ## Version 23 — Mobil savat indikatori
 
 - Mobil ekrandagi savat doirasi 60 px gacha kattalashtirildi.
