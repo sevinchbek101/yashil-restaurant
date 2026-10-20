@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 25 — MCWeb Linux build tuzatishi
+
+- Saytda ishlatilmaydigan eski Sites UI komponentlari TypeScript tekshiruvidan chiqarildi.
+- MCWeb repozitoriyda mavjud bo‘lmagan `components/ui/button` moduliga bog‘lanish bartaraf etildi.
+- Linux serverdagi production build uchun konfiguratsiya moslashtirildi.
+
 ## Version 24 — YASHIL BOWL va MCWeb Node.js relizi
 
 - Demo loyiha YASHIL BOWL nomli to‘liq restoran ko‘rinishiga keltirildi.
